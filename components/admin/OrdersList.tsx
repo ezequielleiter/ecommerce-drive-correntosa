@@ -33,7 +33,7 @@ const OrderList: FC<props> = ({ orders }) => {
 					<Table.Column>Detalle</Table.Column>
 				</Table.Header>
 				<Table.Body>
-					{orders.map(order => {
+					{orders.length >= 0 ? orders.map(order => {
 						return (
 							<Table.Row key={order.email}>
 								<Table.Cell>{order.email}</Table.Cell>
@@ -47,7 +47,7 @@ const OrderList: FC<props> = ({ orders }) => {
 								</Table.Cell>
 							</Table.Row>
 						);
-					})}
+					}) : null}
 				</Table.Body>
 			</Table>
 		</div>

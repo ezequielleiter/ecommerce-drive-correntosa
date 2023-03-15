@@ -42,7 +42,7 @@ export async function getServerSideProps(context) {
 		return {
 			redirect: {
 				permanent: false,
-				destination: '/products'
+				destination: '/compras-activas'
 			},
 			props: { cart, user: { logged: false } }
 		};

@@ -1,7 +1,8 @@
-import { Button, Card, Col, Grid, Modal, Row, Table, Text, Tooltip, useModal, User } from '@nextui-org/react';
+import { Button, Card, Col, Container, Grid, Modal, Row, Table, Text, Tooltip, useModal, User } from '@nextui-org/react';
 import { useEffect, useReducer, useState } from 'react';
 import { IconButton } from '../../components/IconButton';
 import Header from '../../components/navigation/Header';
+import { AlertIcon } from '../../components/svg/AlertIcon';
 import { CancelIcon } from '../../components/svg/CancelIcon';
 import { CheckIcon } from '../../components/svg/CheckIcon';
 import { EyeIcon } from '../../components/svg/EyeIcon';
@@ -82,6 +83,14 @@ export default function Admin(props) {
 	return (
 		<Layout>
 			<Header title="Mis compras" user={props.user} />
+			<Grid.Container gap={2} justify="center" >
+				<Card css={{ mw: "600px", backgroundColor:"#ffff00", alignItems: "center"}}>
+					<Card.Body>
+						<AlertIcon color='grey' height='50' width='50'/>
+						<Text color='grey' weight="bold" css={{textAlign: "center"}}>Acá solo vas a ver la lista de las compras que ya realizaste y te quedan por retirar</Text>
+					</Card.Body>
+				</Card>
+			</Grid.Container>
 			<Grid.Container gap={2} justify="center">
 				<Table
 					aria-label="Example table with static content"

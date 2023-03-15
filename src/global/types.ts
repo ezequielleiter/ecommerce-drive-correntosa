@@ -6,6 +6,7 @@ export type ProductCart = {
 	price?: number;
 	minimum: string;
 	picture?: string;
+	seller?: string
 };
 
 export type UserLogged = {

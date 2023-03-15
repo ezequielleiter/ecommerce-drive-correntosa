@@ -21,15 +21,15 @@ export async function getServerSideProps(context) {
 		};
 	}
 
-	if (getIsOpen.status !== 'open' || !ironSession.user) {
-		return {
-			redirect: {
-				permanent: false,
-				destination: '/'
-			},
-			props: {}
-		};
-	}
+	// if (getIsOpen.status !== 'open' || !ironSession.user) {
+	// 	return {
+	// 		redirect: {
+	// 			permanent: false,
+	// 			destination: '/'
+	// 		},
+	// 		props: {}
+	// 	};
+	// }
 
 	const user: UserLogged = ironSession.user ?? { logged: false };
 

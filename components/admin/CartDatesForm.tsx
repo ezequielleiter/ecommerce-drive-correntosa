@@ -69,7 +69,7 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 		<Container>
 			<Grid.Container gap={2} justify="center">
 				<Grid>
-					<Input label="Nombre de la compra" value={form.name} onChange={e => handleChangeField(e, 'name')} />
+					<Input label="Nombre de la compra" value={initialStatus.name} onChange={e => handleChangeField(e, 'name')} />
 					<Text color="error">{errors.name ?? ''}</Text>
 				</Grid>
 			</Grid.Container>
@@ -79,7 +79,7 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 						type="datetime-local"
 						label="Fecha y hora de apertura"
 						min={today}
-						value={form.openDate}
+						value={initialStatus.openDate}
 						onChange={e => handleChangeField(e, 'openDate')}
 					/>
 					<Text color="error">{errors.openDate ?? ''}</Text>
@@ -90,7 +90,7 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 						label="Fecha y hora de cierre"
 						disabled={form.openDate === ''}
 						min={getMinCloseDate(form.openDate)}
-						value={form.closeDate}
+						value={initialStatus.closeDate}
 						onChange={e => handleChangeField(e, 'closeDate')}
 					/>
 					<Text color="error">{errors.closeDate ?? ''}</Text>

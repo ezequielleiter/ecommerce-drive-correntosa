@@ -5,6 +5,7 @@ import { Fetch } from '../../src/hooks/fetchHook';
 import { useFormValidation } from '../../src/hooks/formHook';
 import { formatDate, getMinCloseDate } from '../../helpers/date';
 import { useSalesCtx } from '../../src/salescontext';
+import { useRouter } from 'next/router';
 
 type props = {
 	setCreating(status: boolean): void;
@@ -18,6 +19,7 @@ const initialFormErrors: errorsFormType = {};
 
 const ModalCreateSale: FC<props> = ({ setCreating, setCurrentStatus, initialStatus, open }) => {
 	const sale = useSalesCtx();
+	const router = useRouter();
 	const form = useFormValidation<createSaleType>(initialFormFields);
 	const [errors, setErrors] = useState(initialFormErrors);
 	const [fetching, setFetching] = useState({ error: null, loading: false, done: false });
@@ -45,6 +47,7 @@ const ModalCreateSale: FC<props> = ({ setCreating, setCurrentStatus, initialStat
 			onError: e => setFetching({ error: 'Ocurrió un error enviando las fechas', loading: false, done: true })
 		});
 		setCreating(false);
+		router.reload()
 	};
 
 	const validate = () => {

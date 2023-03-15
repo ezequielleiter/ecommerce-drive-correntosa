@@ -11,10 +11,12 @@ import UpdateProductToSaleBtn from '../../components/admin/UpdateProductToSaleBt
 import { SalesCtx } from '../../src/salescontext';
 import { useRouter } from 'next/router';
 import { getOrderBySale } from '../../helpers/content';
+import { statusDate } from '../../helpers/date';
 export { getServerSideProps } from '../../src/ssp/admin';
 
 export default function Admin(props) {
 	const [editingDates, setEditingDates] = useState(false);
+	const [saleStatus, setSaleStatus] = useState('');
 	const [ordersCount, setOrdersCount] = useState(0);
 	const [currentStatus, setCurrentStatus] = useState(props.currentStatus);
 	const [orderBySale, setorderBySale] = useState([])
@@ -30,6 +32,8 @@ export default function Admin(props) {
 			setOrdersCount(ordersBySale.length)
 		});
 		infoMessages();
+		const dateStatus = statusDate({ openDate: saleSelected.openDate, closeDate: saleSelected.closeDate });
+		setSaleStatus(dateStatus)
 	}, []);
 
 	return (
@@ -37,11 +41,11 @@ export default function Admin(props) {
 			<Header user={props.user} title="Panel de administrador"></Header>
 			<Container>
 				<Grid.Container justify="center" alignItems="center" gap={3} direction="column">
-					{saleSelected._id ? (
+					{saleStatus === 'closed' ? null : saleSelected._id ? (
 						<Grid>
 							<UpdateProductToSaleBtn saleID={saleSelected._id} />
 						</Grid>
-					) : null}
+					)  : null }
 					<Grid xs={12} sm={10} md={8} lg={6}>
 						{editingDates ? (
 							<CartDatesForm
@@ -57,7 +61,8 @@ export default function Admin(props) {
 						<OrdersCount
 							ordersCount={ordersCount}
 							setOrdersCount={setOrdersCount}
-							status={props.currentStatus.status}
+							status={saleSelected.status}
+							saleId={saleSelected._id}
 						/>
 					</Grid>
 				</Grid.Container>

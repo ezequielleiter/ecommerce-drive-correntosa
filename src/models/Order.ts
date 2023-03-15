@@ -8,6 +8,7 @@ interface Product {
 	qty: number;
 	total: number;
 	picture: string;
+	seller: string
 }
 
 export interface OrderI {
@@ -32,7 +33,8 @@ const Order = new Schema<BaseOrderDocument>(
 				minimum: 'string',
 				qty: 'number',
 				total: 'number',
-				picture: 'string'
+				picture: 'string',
+				seller: 'string'
 			}
 		],
 		total: 'number',
@@ -76,7 +78,7 @@ Order.statics.getUserOrderBySale = async function (userId: string, saleId: strin
 };
 
 Order.statics.getOrderBySale = async function (saleId: string) {
-	const orders = await this.find({ saleId: saleId.toString() });
+	const orders = await this.find({ saleId: saleId.toString()});
 	const ordersToJSON = JSON.stringify(orders);
 	const orderParse = JSON.parse(ordersToJSON);
 	const ordersBySale = orderParse.filter(orderByUser => {

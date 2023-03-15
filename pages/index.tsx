@@ -11,8 +11,8 @@ export default function Home(props) {
 
 	useEffect(() => {
 		infoMessages();
-		if (props.user.logged && props.cartStatus.status === 'open') {
-			router.push('/products');
+		if (props.user.logged) {
+			router.push('/compras-activas');
 		}
 	}, []);
 

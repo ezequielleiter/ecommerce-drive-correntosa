@@ -32,9 +32,11 @@ const CurrentStatus: FC<props> = ({ status, setEditing, saleSelect }) => {
 						<strong>{getTimeFromDate(saleSelect.closeDate)}</strong>
 					</Text>
 				</Grid>
-				<Button onClick={() => setEditing(true)} className="button-total">
-					Editar compra
-				</Button>
+				{dateStatus === 'closed' ? null : (
+					<Button onClick={() => setEditing(true)} className="button-total">
+						Editar compra
+					</Button>
+				)}
 			</Grid.Container>
 		</Container>
 	);
