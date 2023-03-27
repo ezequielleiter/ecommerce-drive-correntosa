@@ -25,7 +25,7 @@ export default function Admin(props) {
 	const handler = () => setVisible(true);
 	return (
 		<Layout>
-			<Header user={props.user} title="Panel de administrador"></Header>
+			<Header user={props.user} title="Panel de administración"></Header>
 			<Container>
 				<Grid.Container justify="center" alignItems="center" gap={3} direction="column">
 					<Text h1>Lista de compras</Text>

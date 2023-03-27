@@ -6,7 +6,7 @@ export type ProductCart = {
 	price?: number;
 	minimum: string;
 	picture?: string;
-	seller?: string
+	seller?: string;
 };
 
 export type UserLogged = {
@@ -23,7 +23,7 @@ export type Cart = {
 	products: Array<ProductCart>;
 	total: number;
 	orderId: string;
-	saleId: string
+	saleId: string;
 };
 
 export type Sales = {
@@ -62,19 +62,34 @@ export type datesFormType = {
 	openDate: string;
 	closeDate: string;
 	name: string;
-	id: string;
+	id?: string;
+	deliveryDate: string;
+	openDeliveryHour: string;
+	closeDeliveryHour: string;
+	locationName: string;
+	locationUrl: string;
 };
 
 export type createSaleType = {
 	openDate: string;
 	closeDate: string;
 	name: string;
+	deliveryDate: string;
+	openDeliveryHour: string;
+	closeDeliveryHour: string;
+	locationName: string;
+	locationUrl: string;
 };
 
 export type errorsFormType = {
 	openDate?: string;
 	closeDate?: string;
 	name?: string;
+	deliveryDate?: string;
+	openDeliveryHour?: string;
+	closeDeliveryHour?: string;
+	locationName?: string;
+	locationUrl?: string;
 };
 
 export type fetchData<T> = {

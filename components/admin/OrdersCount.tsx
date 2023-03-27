@@ -3,6 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import { sheetOrder } from '../../src/global/types';
 import { Fetch } from '../../src/hooks/fetchHook';
 import MyPDF from '../pdf/SellerPagePdf';
+import { FileSpreadsheet } from '../svg/FileSpreadsheet';
+import { PdfIcon } from '../svg/PdfIcon';
 import CustomModal from './CustomModal';
 type props = {
 	ordersCount: number;
@@ -12,7 +14,7 @@ type props = {
 };
 
 const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId }) => {
-	const CERRADA = "Cerrada"
+	const CERRADA = 'Cerrada';
 	const [fetching, setFetching] = useState({ error: null, loading: false, done: false });
 	// const [visibleModal, setVisibleModal] = useState(false);
 	// const postOrdersOnSheets = async () => {
@@ -31,7 +33,7 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId })
 
 	const submitDowload = async saleId => {
 		setFetching({ error: null, done: false, loading: true });
-		fetch(`/api/orders/dowload-products?saleId=${saleId}`)
+		fetch(`/api/orders/dowload-products?saleId=${saleId}&type=pdf`)
 			.then(response => {
 				return response.blob();
 			})
@@ -49,18 +51,43 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId })
 			});
 	};
 
+	const submitDowloadExcel = async saleId => {
+		setFetching({ error: null, done: false, loading: true });
+		fetch(`/api/orders/dowload-products?saleId=${saleId}&type=excel`)
+			.then(response => {
+				return response.blob();
+			})
+			.then(blob => {
+				setFetching({ error: null, done: true, loading: false });
+				const url = window.URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = 'productos.xlsx';
+				a.click();
+				window.URL.revokeObjectURL(url);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
 	return (
 		<Container>
 			<Grid.Container justify="center" direction="column" alignItems="center">
 				<Text h3>Pedidos guardados hasta ahora (sin enviar)</Text>
 				<Text h2>{ordersCount}</Text>
 				{status === CERRADA ? (
-					<Button
-						onClick={() => submitDowload(saleId)}
-						className={fetching.loading ? 'button-total-disabled' : 'button-total'}
-					>
-						Descargar pedidos
-					</Button>
+					<div style={{display: "flex"}}>
+						<Button
+							onClick={() => submitDowload(saleId)}
+							color="primary"
+						>
+							<PdfIcon /> Descargar pedidos en PDF
+						</Button>
+						<Button onClick={() => submitDowloadExcel(saleId)} color="success" className={fetching.loading ? 'button-total-disabled' : ''} style={{marginLeft: "1rem"}}>
+							<FileSpreadsheet /> Descargar pedidos en Excel
+						</Button>
+					</div>
 				) : null}
 				{/* <Button
 					disabled={status === 'open'}

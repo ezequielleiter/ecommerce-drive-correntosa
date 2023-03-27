@@ -27,18 +27,56 @@ class ConfigService extends BaseService {
 		}
 	}
 
-	async setDates(openDate: string, closeDate: string, name: string, id: string) {
+	async setDates(
+		openDate: string,
+		closeDate: string,
+		name: string,
+		id: string,
+		deliveryDate: string,
+		openDeliveryHour: string,
+		closeDeliveryHour: string,
+		locationName: string,
+		locationUrl: string
+	) {
 		try {
-			await Config.updateDates(openDate, closeDate, name, id);
+			await Config.updateDates(
+				openDate,
+				closeDate,
+				name,
+				id,
+				deliveryDate,
+				openDeliveryHour,
+				closeDeliveryHour,
+				locationName,
+				locationUrl
+			);
 			return { error: false };
 		} catch (e) {
 			throw new ApiException(e);
 		}
 	}
 
-	async createSale(openDate: string, closeDate: string, name: string) {
+	async createSale(
+		openDate: string,
+		closeDate: string,
+		name: string,
+		deliveryDate: string,
+		openDeliveryHour: string,
+		closeDeliveryHour: string,
+		locationName: string,
+		locationUrl: string
+	) {
 		try {
-			await Config.createSale(openDate, closeDate, name);
+			await Config.createSale(
+				openDate,
+				closeDate,
+				name,
+				deliveryDate,
+				openDeliveryHour,
+				closeDeliveryHour,
+				locationName,
+				locationUrl
+			);
 			return { error: false };
 		} catch (e) {
 			throw new ApiException(e);

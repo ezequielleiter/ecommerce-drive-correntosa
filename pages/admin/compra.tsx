@@ -19,7 +19,7 @@ export default function Admin(props) {
 	const [saleStatus, setSaleStatus] = useState('');
 	const [ordersCount, setOrdersCount] = useState(0);
 	const [currentStatus, setCurrentStatus] = useState(props.currentStatus);
-	const [orderBySale, setorderBySale] = useState([])
+	const [orderBySale, setorderBySale] = useState([]);
 	const { saleSelected } = useContext(SalesCtx);
 	const router = useRouter();
 
@@ -28,25 +28,25 @@ export default function Admin(props) {
 			router.push('/admin');
 		}
 		getOrderBySale(saleSelected._id).then(ordersBySale => {
-			setorderBySale(ordersBySale)
-			setOrdersCount(ordersBySale.length)
+			setorderBySale(ordersBySale);
+			setOrdersCount(ordersBySale.length);
 		});
 		infoMessages();
 		const dateStatus = statusDate({ openDate: saleSelected.openDate, closeDate: saleSelected.closeDate });
-		setSaleStatus(dateStatus)
+		setSaleStatus(dateStatus);
 	}, []);
 
 	return (
 		<Layout>
-			<Header user={props.user} title="Panel de administrador"></Header>
+			<Header user={props.user} title={saleSelected.name}></Header>
 			<Container>
-				<Grid.Container justify="center" alignItems="center" gap={3} direction="column">
+				<Grid.Container css={{ width: '100%' }} justify="center" alignItems="center" gap={3} direction="column">
 					{saleStatus === 'closed' ? null : saleSelected._id ? (
 						<Grid>
 							<UpdateProductToSaleBtn saleID={saleSelected._id} />
 						</Grid>
-					)  : null }
-					<Grid xs={12} sm={10} md={8} lg={6}>
+					) : null}
+					<Grid xs={12} sm={12} md={12} lg={12}>
 						{editingDates ? (
 							<CartDatesForm
 								setEditing={setEditingDates}
