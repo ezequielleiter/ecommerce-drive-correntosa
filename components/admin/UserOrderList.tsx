@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
-import { Table, User, Button, Text } from '@nextui-org/react';
+import { Table, User, Button, Text, Modal, Radio, Input } from '@nextui-org/react';
 
 const counterContext = {
 	order: {}
@@ -26,6 +26,9 @@ function orderReducer(state, action) {
 const UserOrderList = ({ orderList }) => {
 	const [state, dispatch] = useReducer(orderReducer, counterContext);
 	const [productCheck, setProductCheck] = useState(0);
+	const [visible, setVisible] = useState(false);
+	const handler = () => setVisible(true);
+	const [paymentType, setPaymentType] = useState('');
 	const { order } = state;
 
 	useEffect(() => {
@@ -60,6 +63,11 @@ const UserOrderList = ({ orderList }) => {
 	const handleSelectionChange = e => {
 		const totalProductCheck = Array.from(e);
 		setProductCheck(totalProductCheck.length);
+	};
+
+	const closeHandler = () => {
+		setVisible(false);
+		console.log('closed');
 	};
 
 	return (
@@ -122,7 +130,36 @@ const UserOrderList = ({ orderList }) => {
 			<Text css={{ marginTop: '2rem' }} size="$3xl" weight="bold">
 				Total: $ {order?.total}
 			</Text>
-			<Button disabled={order?.products?.length !== productCheck}>Pagar</Button>
+			<Button disabled={order?.products?.length !== productCheck} onClick={() => setVisible(true)}>
+				Pagar
+			</Button>
+			<Modal closeButton aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
+				<Modal.Header>
+					<Text id="modal-title" size={18}>
+						Welcome to
+						<Text b size={18}>
+							NextUI
+						</Text>
+					</Text>
+				</Modal.Header>
+				<Modal.Body>
+					<Radio.Group label="Forma de pago" value={paymentType} onChange={setPaymentType}>
+						<Radio value="debito">Debito</Radio>
+						<Radio value="efectivo">Efectivo</Radio>
+						<Radio value="trasferencia">Trasferencia</Radio>
+						<Radio value="otro">Otro</Radio>
+					</Radio.Group>
+					{paymentType === 'otro' ? <Input placeholder="Por favor, indique de que manera va a abonar" /> : null}
+				</Modal.Body>
+				<Modal.Footer>
+					<Button auto flat color="error" onPress={closeHandler}>
+						Close
+					</Button>
+					<Button auto onPress={closeHandler}>
+						Sign in
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 };

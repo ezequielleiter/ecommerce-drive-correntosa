@@ -7,12 +7,12 @@ import OrderService from '../services/OrderService';
 
 export async function getServerSideProps(context) {
 	const configService = container.resolve(ConfigService);
-	const getIsOpen = await configService.getCartStatus();
+	// const getIsOpen = await configService.getCartStatus();
 	const ironSession: IronSessionData = await getIronSession(context.req, context.res, sessionOptions);
 
 	const cart = { products: [], total: 0 };
 
-	if(ironSession.user && !ironSession.user.id){
+	if (ironSession.user && !ironSession.user.id) {
 		context.req.session.destroy();
 		return {
 			redirect: {
@@ -22,9 +22,8 @@ export async function getServerSideProps(context) {
 			props: {}
 		};
 	}
-	
-	
-	if (ironSession.user && getIsOpen.status === 'open') {
+
+	if (ironSession.user) {
 		const orderService = container.resolve(OrderService);
 		// const ModelResponse = await orderService.getUserOrder(ironSession.user.email);
 		// if (ModelResponse) {

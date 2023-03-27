@@ -41,11 +41,11 @@ export async function getServerSideProps(context) {
 		// }
 	}
 
-	const currentStatus = await configService.getCartStatus();
+	// const currentStatus = await configService.getCartStatus();
 	const allSales = await configService.getAllSales();
 	const currentOrders = await orderService.getCurrentOrders();
 
 	return {
-		props: { user, currentStatus, currentOrders, cart, allSales }
+		props: { user, currentOrders, cart, allSales }
 	};
 }

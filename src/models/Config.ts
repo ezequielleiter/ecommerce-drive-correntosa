@@ -5,6 +5,11 @@ export interface ConfigI {
 	closeDate: String | null;
 	name: String | null;
 	products: any | null;
+	deliveryDate: String | null;
+	openDeliveryHour: String | null;
+	closeDeliveryHour: String | null;
+	locationName: String | null;
+	locationUrl: String | null;
 }
 
 interface BaseConfigDocument extends ConfigI, Document {}
@@ -13,7 +18,12 @@ const Config = new Schema<BaseConfigDocument>({
 	openDate: { type: 'string' || null },
 	closeDate: { type: 'string' || null },
 	name: { type: 'string' || null },
-	products: { type: 'array' || null }
+	products: { type: 'array' || null },
+	deliveryDate: { type: 'string' || null },
+	openDeliveryHour: { type: 'string' || null },
+	closeDeliveryHour: { type: 'string' || null },
+	locationName: { type: 'string' || null },
+	locationUrl: { type: 'string' || null }
 });
 
 Config.statics.getCartStatus = async function () {
@@ -57,15 +67,52 @@ Config.statics.getSale = async function (salesId) {
 	return sale[0];
 };
 
-Config.statics.createSale = async function (openDate, closeDate, name, id) {
-	const sale = await this.insertMany({ openDate: openDate.toString(), closeDate: closeDate.toString(), name: name });
+Config.statics.createSale = async function (
+	openDate,
+	closeDate,
+	name,
+	deliveryDate,
+	openDeliveryHour,
+	closeDeliveryHour,
+	locationName,
+	locationUrl
+) {
+	const sale = await this.insertMany({
+		openDate: openDate.toString(),
+		closeDate: closeDate.toString(),
+		name: name,
+		deliveryDate,
+		openDeliveryHour,
+		closeDeliveryHour,
+		locationName,
+		locationUrl
+	});
 	return sale[0];
 };
 
-Config.statics.updateDates = async function (openDate, closeDate, name, id) {
+Config.statics.updateDates = async function (
+	openDate,
+	closeDate,
+	name,
+	id,
+	deliveryDate,
+	openDeliveryHour,
+	closeDeliveryHour,
+	locationName,
+	locationUrl
+) {
 	await this.findOneAndUpdate(
 		{ _id: id },
-		{ openDate: openDate.toString(), closeDate: closeDate.toString(), name: name }
+		{
+			openDate: openDate.toString(),
+			closeDate: closeDate.toString(),
+			name: name,
+			deliveryDate,
+			openDeliveryHour,
+			closeDeliveryHour,
+			locationName,
+			locationUrl
+		}
 	);
 };
 
@@ -93,7 +140,6 @@ Config.statics.getProductsBySale = async function (id: string, query) {
 	}
 
 	const filteredProductos = productList[0].products.filter(producto => {
-
 		if (category.length > 1) {
 			return producto.category === category && producto.name.includes(search && search.length > 1 ? search : '');
 		}

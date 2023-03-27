@@ -12,7 +12,16 @@ type props = {
 	initialStatus: any;
 };
 
-const initialFormFields: datesFormType = { openDate: '', closeDate: '', name: '' };
+const initialFormFields: datesFormType = {
+	openDate: '',
+	closeDate: '',
+	name: '',
+	deliveryDate: '',
+	openDeliveryHour: '',
+	closeDeliveryHour: '',
+	locationName: '',
+	locationUrl: ''
+};
 const initialFormErrors: errorsFormType = {};
 
 const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus }) => {
@@ -38,7 +47,12 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 				openDate: form.fields.openDate.replace('.000Z', ''),
 				closeDate: form.fields.closeDate.replace('.000Z', ''),
 				name: form.fields.name,
-				id: initialStatus._id
+				id: initialStatus._id,
+				deliveryDate: form.fields.deliveryDate,
+				openDeliveryHour: form.fields.openDeliveryHour,
+				closeDeliveryHour: form.fields.closeDeliveryHour,
+				locationName: form.fields.locationName,
+				locationUrl: form.fields.locationUrl
 			},
 			onSuccess: response => {
 				sale.selectSale(response);
@@ -54,7 +68,11 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 			openDate: 'Debe ingresar una fecha de apertura',
 			closeDate: 'Debe ingresar una fecha de cierre',
 			name: 'Debe ingresar un nombre',
-			id: 'Debe tener un id'
+			deliveryDate: 'Debe ingresar una fecha de entrega',
+			openDeliveryHour: 'Debe ingresar una hora de entrega',
+			closeDeliveryHour: 'Debe ingresar una hora de cierre',
+			locationName: 'Debe ingresar el nombre del lugar de entrega',
+			locationUrl: 'Debe ingresar el link del lugar de entrega'
 		});
 		const validateIntervalDates = new Date(form.closeDate) <= new Date(form.openDate);
 
@@ -67,7 +85,7 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 
 	return (
 		<Container>
-			<Grid.Container gap={2} justify="center">
+			<Grid.Container gap={2} justify="center" css={{ width: '60vw' }}>
 				<Grid>
 					<Input label="Nombre de la compra" value={initialStatus.name} onChange={e => handleChangeField(e, 'name')} />
 					<Text color="error">{errors.name ?? ''}</Text>
@@ -96,6 +114,68 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 					<Text color="error">{errors.closeDate ?? ''}</Text>
 				</Grid>
 			</Grid.Container>
+			<Text weight="bold" css={{ textAlign: 'center' }}>
+				Dia y hora de entrega
+			</Text>
+			<Grid.Container gap={2} justify="center">
+				<Grid xs={4} css={{ flexDirection: 'column' }}>
+					<Input
+						type="date"
+						label="Fecha de entrega"
+						min={getMinCloseDate(form.closeDate)}
+						value={initialStatus.deliveryDate}
+						onChange={e => handleChangeField(e, 'deliveryDate')}
+						fullWidth
+					/>
+					<Text color="error">{errors.deliveryDate ?? ''}</Text>
+				</Grid>
+				<Grid xs={4} css={{ flexDirection: 'column' }}>
+					<Input
+						type="time"
+						label="Desde:"
+						// min={getMinCloseDate(form.openDate)}
+						value={initialStatus.openDeliveryHour}
+						onChange={e => handleChangeField(e, 'openDeliveryHour')}
+						fullWidth
+					/>
+					<Text color="error">{errors.openDeliveryHour ?? ''}</Text>
+				</Grid>
+				<Grid xs={4} css={{ flexDirection: 'column' }}>
+					<Input
+						type="time"
+						label="Hasta:"
+						// min={getMinCloseDate(form.openDate)}
+						value={initialStatus.closeDeliveryHour}
+						onChange={e => handleChangeField(e, 'closeDeliveryHour')}
+						fullWidth
+					/>
+					<Text color="error">{errors.closeDeliveryHour ?? ''}</Text>
+				</Grid>
+			</Grid.Container>
+			<Text weight="bold" css={{ textAlign: 'center' }}>
+				Lugar de entrega
+			</Text>
+			<Grid.Container gap={2} justify="center">
+				<Grid xs={6} css={{ flexDirection: 'column' }}>
+					<Input
+						label="Nombre del lugar de entrega"
+						value={initialStatus.locationName}
+						onChange={e => handleChangeField(e, 'locationName')}
+						fullWidth
+					/>
+					<Text color="error">{errors.locationName ?? ''}</Text>
+				</Grid>
+				<Grid xs={6} css={{ flexDirection: 'column' }}>
+					<Input
+						label="Lugar de la compra (link de Google Maps)"
+						value={initialStatus.locationUrl}
+						onChange={e => handleChangeField(e, 'locationUrl')}
+						fullWidth
+					/>
+					<Text color="error">{errors.locationUrl ?? ''}</Text>
+				</Grid>
+			</Grid.Container>
+
 			<Button
 				onClick={() => setEditing(false)}
 				className={fetching.loading ? 'button-total-disabled' : 'button-cancel'}
