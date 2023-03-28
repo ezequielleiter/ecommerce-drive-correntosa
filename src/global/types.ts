@@ -16,21 +16,22 @@ export type UserLogged = {
 	email?: string;
 	profile_picture?: string;
 	logged?: boolean;
-	isAdmin: boolean;
+	isAdmin?: boolean;
 };
 
 export type Cart = {
 	products: Array<ProductCart>;
 	total: number;
 	orderId: string;
-	saleId: string;
+	saleId?: string;
 };
 
 export type Sales = {
-	_id: string;
+	_id?: string;
 	openDate?: string;
 	closeDate?: string;
 	name?: string;
+	status?: string
 };
 
 export type GoogleSheetDataType = Array<Array<string>>;

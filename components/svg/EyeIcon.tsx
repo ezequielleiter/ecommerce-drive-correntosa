@@ -1,4 +1,13 @@
-export const EyeIcon = ({
+import { FC } from 'react';
+
+type props = {
+	fill?: string,
+  size?: number,
+  height?: string,
+  width?: string,
+};
+
+export const EyeIcon: FC<props>  = ({
     fill,
     size,
     height,

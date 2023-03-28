@@ -1,8 +1,21 @@
-export const CancelIcon = ({ fill = 'currentColor', filled, size, height, width, label, ...props }) => {
+import { FC } from 'react';
+
+type props = {
+	fill?: string;
+	size?: number;
+	height?: string;
+	width?: string;
+	color?: string;
+	filled?: string;
+	label?: string
+};
+
+
+export const CancelIcon: FC<props> = ({ fill = 'currentColor', filled, size, height, width, label, ...props }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			class="icon icon-tabler icon-tabler-x"
+			className="icon icon-tabler icon-tabler-x"
 			width="24"
 			height="24"
 			viewBox="0 0 24 24"

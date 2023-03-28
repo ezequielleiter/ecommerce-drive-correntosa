@@ -7,9 +7,13 @@ import { getOrderBySale } from '../../helpers/content';
 import { SalesCtx } from '../../src/salescontext';
 export { getServerSideProps } from '../../src/ssp/admin';
 
+interface CustomerOrder {
+	email: string;
+  }
+
 export default function OrderDetail(props) {
 	const { saleSelected, orderByUser } = useContext(SalesCtx);
-	const [customerOrderList, setCustomerOrderList] = useState();
+	const [customerOrderList, setCustomerOrderList] = useState<CustomerOrder>();
 
 	useEffect(() => {
 		getOrderBySale(saleSelected._id).then(ordersBySales => {
@@ -22,7 +26,7 @@ export default function OrderDetail(props) {
 
 	return (
 		<Layout>
-			<Header user={props.user} title="Detalle de compra de:" orderUserName={customerOrderList?.email}></Header>
+			<Header user={props.user} title="Detalle de compra de:"  orderUserName={customerOrderList.email}></Header>
 			<Container>
 				{customerOrderList ? (
 					<UserOrdersList orderList={customerOrderList} />
