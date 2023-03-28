@@ -32,7 +32,7 @@ export default function Admin(props) {
 
 	function getDay(date) {
 		const fecha = new Date(date);
-		const opciones = { weekday: 'long' };
+		const opciones: Intl.DateTimeFormatOptions = { weekday: 'long' };
 		const dia = fecha.getDate();
 		const mes = fecha.toLocaleString('default', { month: 'long' });
 		const diaDeLaSemana = fecha.toLocaleDateString('es-AR', opciones);

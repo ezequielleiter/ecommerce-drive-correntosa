@@ -48,5 +48,5 @@ export async function getServerSideProps(context) {
 	}
 
 	const user: UserLogged = ironSession.user ?? { logged: false };
-	return { props: { cartStatus: getIsOpen, user, cart } };
+	return { props: { cartStatus: user, cart } };
 }

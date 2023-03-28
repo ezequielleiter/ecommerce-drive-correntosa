@@ -12,6 +12,13 @@ export interface ConfigI {
 	locationUrl: String | null;
 }
 
+interface Product {
+	totalProductos: String | null;
+	totalPaginas: Number | null;
+	paginaActual: String | null;
+	productos: String | null;
+}
+
 interface BaseConfigDocument extends ConfigI, Document {}
 
 const Config = new Schema<BaseConfigDocument>({
@@ -130,7 +137,12 @@ Config.statics.updateProducts = async function (products, saleToUpdate) {
 Config.statics.getProductsBySale = async function (id: string, query) {
 	const limit = 60;
 	const { category, search, page } = query;
-	let products = {};
+	let products: Product = {
+		totalProductos: '',
+		totalPaginas: 0,
+		paginaActual: '',
+		productos: ''
+	};
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
 	const productList = await this.find({ _id: id });

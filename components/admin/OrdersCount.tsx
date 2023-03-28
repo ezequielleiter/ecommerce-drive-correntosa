@@ -1,11 +1,7 @@
 import { Button, Container, Grid, Loading, Text } from '@nextui-org/react';
-import { FC, useEffect, useState } from 'react';
-import { sheetOrder } from '../../src/global/types';
-import { Fetch } from '../../src/hooks/fetchHook';
-import MyPDF from '../pdf/SellerPagePdf';
+import { FC, useState } from 'react';
 import { FileSpreadsheet } from '../svg/FileSpreadsheet';
 import { PdfIcon } from '../svg/PdfIcon';
-import CustomModal from './CustomModal';
 type props = {
 	ordersCount: number;
 	setOrdersCount(count: number): void;

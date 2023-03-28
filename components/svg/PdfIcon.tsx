@@ -1,17 +1,25 @@
-export const PdfIcon = ({
+import { FC } from 'react';
+
+type props = {
+	fill?: string;
+	size?: number;
+	height?: string;
+	width?: string;
+	color?: string;
+};
+
+export const PdfIcon: FC<props> = ({
 	color = 'currentColor',
 	fill = 'currentColor',
-	filled,
 	size,
 	height = '24',
 	width = '24',
-	label,
 	...props
 }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			class="icon icon-tabler icon-tabler-pdf"
+			className="icon icon-tabler icon-tabler-pdf"
 			width="24"
 			height="24"
 			viewBox="0 0 24 24"

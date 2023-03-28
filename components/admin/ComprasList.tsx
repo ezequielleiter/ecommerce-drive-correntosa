@@ -67,7 +67,7 @@ const ComprasList: FC<props> = ({ compras }) => {
 								<Table.Cell>
 									<Tooltip content="Details">
 										<IconButton onClick={() => navigateCompra(compra)}>
-											<EyeIcon size={20} fill="#979797" />
+											<EyeIcon size={20} fill="#979797"/>
 										</IconButton>
 									</Tooltip>
 								</Table.Cell>
