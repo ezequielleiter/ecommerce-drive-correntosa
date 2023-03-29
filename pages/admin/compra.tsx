@@ -41,7 +41,7 @@ export default function Admin(props) {
 			<Header user={props.user} title={saleSelected.name}></Header>
 			<Container>
 				<Grid.Container css={{ width: '100%' }} justify="center" alignItems="center" gap={3} direction="column">
-					{saleStatus === 'closed' ? null : saleSelected._id ? (
+					{saleStatus === 'closed' ? null : saleSelected._id && props.user.isSuperAdmin ? (
 						<Grid>
 							<UpdateProductToSaleBtn saleID={saleSelected._id} />
 						</Grid>
@@ -54,7 +54,7 @@ export default function Admin(props) {
 								initialStatus={saleSelected}
 							/>
 						) : (
-							<CurrentStatus status={currentStatus} setEditing={setEditingDates} saleSelect={saleSelected} />
+							<CurrentStatus status={currentStatus} setEditing={setEditingDates} saleSelect={saleSelected} isSuperAdmin={props.user.isSuperAdmin}/>
 						)}
 					</Grid>
 					<Grid xs={12} sm={10} md={8} lg={6}>

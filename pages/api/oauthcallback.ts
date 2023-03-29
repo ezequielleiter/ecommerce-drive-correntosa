@@ -37,7 +37,8 @@ const oauthCallback = async (req: NextApiRequest, res: NextApiResponse) => {
 				email: profile.email,
 				profile_picture: profile.picture,
 				logged: true,
-				isAdmin: MatchEmail[config.GOOGLE_SHEET_ROWS.USERS.IS_ADMIN_COLUMN] === '1'
+				isAdmin: MatchEmail[config.GOOGLE_SHEET_ROWS.USERS.IS_ADMIN_COLUMN] === '1',
+				isSuperAdmin: MatchEmail[config.GOOGLE_SHEET_ROWS.USERS.IS_ADMIN_COLUMN] === '2'
 			};
 
 			await req.session.save();

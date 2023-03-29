@@ -8,9 +8,10 @@ type props = {
 	status: statusCart;
 	setEditing(editing: boolean): void;
 	saleSelect: any;
+	isSuperAdmin?: boolean
 };
 
-const CurrentStatus: FC<props> = ({ status, setEditing, saleSelect }) => {
+const CurrentStatus: FC<props> = ({ status, setEditing, saleSelect, isSuperAdmin }) => {
 	const dateStatus = statusDate({ openDate: saleSelect.openDate, closeDate: saleSelect.closeDate });
 
 	return (
@@ -32,7 +33,7 @@ const CurrentStatus: FC<props> = ({ status, setEditing, saleSelect }) => {
 					</Text>
 				</Grid>
 				{dateStatus === 'closed' ? null : (
-					<Button onClick={() => setEditing(true)} className="button-total">
+					<Button onClick={() => setEditing(true)} className={!isSuperAdmin? 'button-total-disabled' : 'button-total'} disabled={!isSuperAdmin}>
 						Editar compra
 					</Button>
 				)}

@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ title, user, cart, saleName, orderUserN
 									<Text onClick={() => router.push('/compras-activas')}>Inicio</Text>
 								</Dropdown.Item>
 								<Dropdown.Item key="mis-compras"><Text onClick={() => router.push('/mis-compras')}>Mis compras</Text></Dropdown.Item>
-								{user.isAdmin ? (
+								{user.isAdmin || user.isSuperAdmin  ? (
 									<Dropdown.Item key="admin" withDivider>
 										<Text onClick={() => router.push('/admin')}>Administrar compras</Text>
 									</Dropdown.Item>

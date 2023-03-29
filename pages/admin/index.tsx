@@ -30,9 +30,11 @@ export default function Admin(props) {
 				<Grid.Container justify="center" alignItems="center" gap={3} direction="column">
 					<Text h1>Lista de compras</Text>
 				</Grid.Container>
-				<Grid.Container justify="flex-start" alignItems="flex-start" gap={3} direction="column">
-					<Button onPress={handler}>Crear compra</Button>
-				</Grid.Container>
+				{props.user.isSuperAdmin ? (
+					<Grid.Container justify="flex-start" alignItems="flex-start" gap={3} direction="column">
+						<Button onPress={handler}>Crear compra</Button>
+					</Grid.Container>
+				) : null}
 				<ComprasList compras={compras} />
 			</Container>
 			<ModalCreateSale open={visible} setCreating={setVisible} />

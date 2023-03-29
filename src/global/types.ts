@@ -17,6 +17,7 @@ export type UserLogged = {
 	profile_picture?: string;
 	logged?: boolean;
 	isAdmin?: boolean;
+	isSuperAdmin?: boolean;
 };
 
 export type Cart = {

@@ -13,6 +13,7 @@ declare module 'iron-session' {
 			profile_picture?: string;
 			logged?: boolean;
 			isAdmin?: boolean;
+			isSuperAdmin?: boolean;
 		};
 	}
 }
