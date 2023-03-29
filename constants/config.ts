@@ -27,5 +27,11 @@ export default {
 			EMAIL_COLUMN: 2,
 			IS_ADMIN_COLUMN: 3
 		}
+	},
+	mongo:{
+		MONGO_USERNAME: process.env.MONGO_USERNAME,
+		MONGO_PASSWORD: process.env.MONGO_PASSWORD,
+		MONGO_HOST: process.env.MONGO_HOST,
+		MONGO_DATABASE: process.env.MONGO_DATABASE,
 	}
 };

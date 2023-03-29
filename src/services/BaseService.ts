@@ -1,4 +1,5 @@
 import { singleton } from 'tsyringe';
+import config from '../../constants/config';
 import { connection, connect, ConnectionStates } from 'mongoose';
 
 @singleton()
@@ -13,7 +14,8 @@ class BaseService {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (this.isDbConnected) return;
-				const db = await connect('mongodb://localhost:27017/config');
+				const db = await connect(`mongodb+srv://${config.mongo.MONGO_USERNAME}:${config.mongo.MONGO_PASSWORD}@${config.mongo.MONGO_HOST}/${config.mongo.MONGO_DATABASE}?tls=true&authSource=admin&replicaSet=db-app-correntosa`);
+
 				this.isDbConnected = db.connections[0].readyState;
 				resolve(db.connections[0].readyState);
 			} catch (e) {
