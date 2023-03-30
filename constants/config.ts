@@ -33,5 +33,8 @@ export default {
 		MONGO_PASSWORD: process.env.MONGO_PASSWORD,
 		MONGO_HOST: process.env.MONGO_HOST,
 		MONGO_DATABASE: process.env.MONGO_DATABASE,
+	},
+	googleCredentials:{
+		GOOGLE_CREDENTIALS: process.env.GOOGLE_CREDENTIALS
 	}
 };
