@@ -34,7 +34,7 @@ class GoogleAuthService extends BaseService {
 		return new Promise(async (resolve, reject) => {
 			try {
 				const googleAuth = new GoogleAuth({
-					keyFile: './google-credentials.json',
+					credentials: JSON.parse(config.googleCredentials.GOOGLE_CREDENTIALS),
 					scopes: config.gapi.SCOPES
 				});
 				const googleClient = await googleAuth.getClient();
