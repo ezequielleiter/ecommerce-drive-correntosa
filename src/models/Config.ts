@@ -128,15 +128,23 @@ Config.statics.updateProducts = async function (products, saleToUpdate) {
 	const saleObj = JSON.parse(saleJSON);
   
 	products.forEach(product => {
-	  const existingProductIndex = saleObj.products.findIndex(p => p._id.toString() === product._id.toString());	  
-	  if (existingProductIndex !== -1) {
-		saleObj.products[existingProductIndex].name = product.name;
-		saleObj.products[existingProductIndex].price = product.price;
-		saleObj.products[existingProductIndex].stock = product.stock;
+	  const existingProductIndex = saleObj.products.findIndex(p => p.code.toString() === product.code.toString());
+	  
+	  if (product.stock) {
+		if (existingProductIndex !== -1) {
+		  saleObj.products[existingProductIndex].name = product.name;
+		  saleObj.products[existingProductIndex].price = product.price;
+		  saleObj.products[existingProductIndex].stock = product.stock;
+		} else {
+		  saleObj.products.push(product);
+		}
 	  } else {
-		saleObj.products.push(product);
+		if (existingProductIndex !== -1) {
+		  saleObj.products.splice(existingProductIndex, 1);
+		}
 	  }
 	});
+  
 	await this.updateOne({ _id: saleObj._id.toString() }, { $set: { products: saleObj.products } }, {});
   };
 
