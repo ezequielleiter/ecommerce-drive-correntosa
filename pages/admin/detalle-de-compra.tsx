@@ -26,7 +26,7 @@ export default function OrderDetail(props) {
 
 	return (
 		<Layout>
-			<Header user={props.user} title="Detalle de compra de:"  orderUserName={customerOrderList.email}></Header>
+			<Header user={props.user} title="Detalle de compra de:"  orderUserName={customerOrderList?.email}></Header>
 			<Container>
 				{customerOrderList ? (
 					<UserOrdersList orderList={customerOrderList} />
