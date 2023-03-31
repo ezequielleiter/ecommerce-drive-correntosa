@@ -126,13 +126,19 @@ Config.statics.updateDates = async function (
 Config.statics.updateProducts = async function (products, saleToUpdate) {
 	const saleJSON = JSON.stringify(saleToUpdate);
 	const saleObj = JSON.parse(saleJSON);
+  
 	products.forEach(product => {
-		if (product.stock) {
-			saleObj.products.push(product);
-		}
+	  const existingProductIndex = saleObj.products.findIndex(p => p._id.toString() === product._id.toString());	  
+	  if (existingProductIndex !== -1) {
+		saleObj.products[existingProductIndex].name = product.name;
+		saleObj.products[existingProductIndex].price = product.price;
+		saleObj.products[existingProductIndex].stock = product.stock;
+	  } else {
+		saleObj.products.push(product);
+	  }
 	});
 	await this.updateOne({ _id: saleObj._id.toString() }, { $set: { products: saleObj.products } }, {});
-};
+  };
 
 Config.statics.getProductsBySale = async function (id: string, query) {
 	const limit = 60;

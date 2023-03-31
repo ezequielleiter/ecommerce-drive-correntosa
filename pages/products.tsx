@@ -36,7 +36,7 @@ export default function Products(props) {
 		}
 		infoMessages();
 		getuserOrderBySale(props.user.id, saleSelected._id).then(res => {
-			cart.setCarBySale(res)
+			cart.setCarBySale(res);
 		});
 		getProductsBySale(salesId).then(res => {
 			setLoading(true);
@@ -98,15 +98,17 @@ export default function Products(props) {
 								<Text>No se encontraron productos para tu busqueda</Text>
 							) : (
 								products &&
-								products.map(item => (
-									<Grid xs={12} sm={12} md={6} lg={4} xl={4} key={item.code}>
-										<ProductCard
-											addProduct={(product, qty) => addProductToCart(product, qty)}
-											item={item}
-											key={item.code}
-										/>
-									</Grid>
-								))
+								products.map(item =>
+									item.stock ? (
+										<Grid xs={12} sm={12} md={6} lg={4} xl={4} key={item.code}>
+											<ProductCard
+												addProduct={(product, qty) => addProductToCart(product, qty)}
+												item={item}
+												key={item.code}
+											/>
+										</Grid>
+									) : null
+								)
 							)}
 						</Grid.Container>
 						<Grid.Container gap={2} css={{ padding: 0 }}>
