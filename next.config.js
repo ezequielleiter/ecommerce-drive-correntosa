@@ -15,10 +15,12 @@ const nextConfig = {
 	images: {
 		loader: 'default',
 		domains: [
-		'https://lh3.googleusercontent.com',
-		'lh3.googleusercontent.com',
-		'https://lh3.googleusercontent.com/'
-		],
+			'https://lh3.googleusercontent.com',
+			'lh3.googleusercontent.com',
+			'https://lh3.googleusercontent.com/',
+			'https://drive.google.com/',
+			'drive.google.com'
+		]
 	},
 	future: {
 		webpack5: true

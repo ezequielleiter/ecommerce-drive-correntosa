@@ -1,5 +1,5 @@
 .header {
-    height: 168px;
+    height: 180px;
     background : linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/img/bgwave.jpg');
     background-repeat: no-repeat;
     background-position: top;
@@ -11,6 +11,7 @@
     padding-bottom: 30px;
     padding-left: 15px;
     padding-right: 15px;
+    margin-bottom: 2rem;
 
     .header-text {
         letter-spacing: 0px;
@@ -30,11 +31,8 @@
         text-align: center;
         font-style: normal;
         font-weight: 500 !important;
-        font-size: 42px !important;
+        font-size: 20px !important;
         line-height: 48px;
-        text-align: center;
-        padding-right: 0% !important;
-        margin-bottom: 50px !important;
     }
 
     .buttons-container {
@@ -83,6 +81,19 @@
        
     }
     .header-text {
+        letter-spacing: 0px;
+        font-family: 'Roboto';
+        text-align: center;
+        font-style: normal;
+        font-weight: 500 !important;
+        font-size: 42px !important;
+        line-height: 48px;
+        text-align: center;
+        color: #FFFFFF;
+        padding-right: 0% !important;
+        margin-bottom: 50px !important;
+    }
+    .header-compra {
         letter-spacing: 0px;
         font-family: 'Roboto';
         text-align: center;
