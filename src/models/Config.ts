@@ -135,6 +135,11 @@ Config.statics.updateProducts = async function (products, saleToUpdate) {
 		  saleObj.products[existingProductIndex].name = product.name;
 		  saleObj.products[existingProductIndex].price = product.price;
 		  saleObj.products[existingProductIndex].stock = product.stock;
+		  saleObj.products[existingProductIndex].picture = product.picture.replace('&export=download', '');;
+		  saleObj.products[existingProductIndex].seller = product.seller;
+		  saleObj.products[existingProductIndex].categoryName = product.categoryName;
+		  saleObj.products[existingProductIndex].category = product.category;
+		  saleObj.products[existingProductIndex].minimum = product.minimum;
 		} else {
 		  saleObj.products.push(product);
 		}
