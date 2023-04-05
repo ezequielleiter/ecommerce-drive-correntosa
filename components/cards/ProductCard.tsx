@@ -21,7 +21,7 @@ const ProductCard: FC<props> = ({ item, addProduct }) => {
 				<Card.Body className="product-container">
 					<Grid.Container gap={1} justify="space-around">
 						<Grid xs={4}>
-							<Image objectFit="contain" src="https://drive.google.com/uc?export=view&id=1Zvaw7lzZ7ihAXfRXP-NI3JtpKySYiogL" />
+							<Image objectFit="contain" src={item.picture} />
 						</Grid>
 						<Grid xs={8} className="details-container" lg={6} md={6} xl={6}>
 							<Text className="product-name">{item.name}</Text>
