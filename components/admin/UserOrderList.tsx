@@ -85,7 +85,7 @@ const UserOrderList = ({ orderList, controller }) => {
 		setProductCheck(totalProductCheck.length);
 	};
 
-	const closeHandler = debounce(() => {
+	const controlHandler = debounce(() => {
 		setVisible(false);
 		const closedOrder = order
 		closedOrder.paymentType = paymentType
@@ -93,6 +93,10 @@ const UserOrderList = ({ orderList, controller }) => {
 		closedOrder.controller = controller
 		controlOrder(closedOrder)
 	}, 500);
+
+	const closeHandler = () => {
+		setVisible(false);
+	}
 	
 	return (
 		<>
@@ -176,7 +180,7 @@ const UserOrderList = ({ orderList, controller }) => {
 					<Button auto flat color="error" onPress={closeHandler}>
 						Cerrar
 					</Button>
-					<Button auto onPress={closeHandler}>
+					<Button auto onPress={controlHandler}>
 						Controlar
 					</Button>
 				</Modal.Footer>
