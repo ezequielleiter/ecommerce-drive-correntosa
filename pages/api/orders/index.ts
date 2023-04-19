@@ -22,7 +22,7 @@ export default async function postOrder(req, res) {
 		
 		const { email, name, id } = currentSession.user;
 		
-		await orderService.saveOrder({ userId: id, products, email, total, saleId });
+		await orderService.saveOrder({ userId: id, products, email, total, saleId, paymentType: null, checked: null, controller: null });
 	
 		// Enviar mail
 

@@ -29,6 +29,8 @@
 		"http2": "^3.3.7",
 		"iron-session": "^6.2.0",
 		"leaflet": "^1.9.3",
+		"lodash": "^4.17.21",
+		"moment": "^2.29.4",
 		"mongoose": "^6.5.1",
 		"next": "12.1.6",
 		"nodemailer": "^6.7.8",

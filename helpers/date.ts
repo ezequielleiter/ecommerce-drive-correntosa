@@ -39,3 +39,29 @@ export const statusDate = (currentDate: any) => {
 
 	return status;
 };
+
+export const statuSale = (currentDate: any, capital = false) => {
+	let formattedOpenDate = new Date(currentDate.openDate);
+	let formattedClosedDate = new Date(currentDate.closeDate);
+
+	formattedOpenDate.setHours(formattedOpenDate.getHours() + 3);
+	formattedClosedDate.setHours(formattedClosedDate.getHours() + 3);
+
+	const openTime = formattedOpenDate.getTime();
+	const closeTime = formattedClosedDate.getTime();
+
+	const today = new Date();
+	const isOpen = today.getTime() >= openTime && today.getTime() <= closeTime;
+
+	let status = '';
+
+	if (isOpen) {
+		capital ? status = 'ABIERTA' : status = "abierta";
+	} else if (today.getTime() < openTime) {
+		capital ? status = 'PROXIMAMENTE' : status = "proximamente";
+	} else {
+		capital ? status = 'FINALIZADA' : status = "finalizada";
+	}
+
+	return status;
+};

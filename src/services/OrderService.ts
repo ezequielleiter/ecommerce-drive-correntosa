@@ -82,6 +82,15 @@ class OrderService extends BaseService {
 		}
 	}
 
+	async closeOrder(orderId: string, order: orderData) {
+		try {
+			const closeOrder = await Order.closeOrder(orderId, order);
+			return closeOrder;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
 	async clearLocalOrders() {
 		try {
 			await Order.deleteAllOrders();

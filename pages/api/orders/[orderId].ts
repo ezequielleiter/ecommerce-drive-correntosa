@@ -13,8 +13,13 @@ export default async function updateOrder(req, res) {
 		const orderService = container.resolve(OrderService);
 		const { orderId } = req.query;
 		const body = JSON.parse(req.body);
-		const { products, total } = body;
-
+		const { products, total, checked, controller, paymentType, isController } = body;
+	
+		if (isController) {
+			await orderService.closeOrder(orderId, {products, total, checked, controller, paymentType});
+			res.status(200).json({ error: false, message: 'Pedido controlado correctamente' });
+			return
+		}
 		await orderService.updateOrder(orderId, {products, total});
 		const currentSession: IronSessionData = await getIronSession(req, res, sessionOptions);
 		const { email, name } = currentSession.user;
