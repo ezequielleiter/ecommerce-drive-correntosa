@@ -1,5 +1,8 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Table, User, Button, Text, Modal, Radio, Input } from '@nextui-org/react';
+import { Fetch } from '../../src/hooks/fetchHook';
+import debounce from 'lodash/debounce';
+import { useRouter } from 'next/router';
 
 const counterContext = {
 	order: {}
@@ -23,13 +26,30 @@ function orderReducer(state, action) {
 	}
 }
 
-const UserOrderList = ({ orderList }) => {
+const UserOrderList = ({ orderList, controller }) => {
 	const [state, dispatch] = useReducer(orderReducer, counterContext);
 	const [productCheck, setProductCheck] = useState(0);
 	const [visible, setVisible] = useState(false);
 	const handler = () => setVisible(true);
 	const [paymentType, setPaymentType] = useState('');
 	const { order } = state;
+	const router = useRouter();
+	
+	const controlOrder = async (order) => {
+		if (!order.products.length) {
+			console.warn(`No puedes actualizar tu orden sin productos`);
+			return;
+		}
+		Fetch({
+			url: `/api/orders/${order._id}`,
+			method: 'PUT',
+			data: { products: order.products, total: order.total, saleId: order._id, controller: order.controller, checked: order.checked, paymentType: order.paymentType, isController: true },
+			onError: e => {
+				console.warn(`error on saving order`, e);
+			},
+			onSuccess: ()  => router.push("/admin")
+		});
+	};
 
 	useEffect(() => {
 		dispatch({ type: 'SET_PRODUCT', products: orderList });
@@ -65,11 +85,15 @@ const UserOrderList = ({ orderList }) => {
 		setProductCheck(totalProductCheck.length);
 	};
 
-	const closeHandler = () => {
+	const closeHandler = debounce(() => {
 		setVisible(false);
-		console.log('closed');
-	};
-
+		const closedOrder = order
+		closedOrder.paymentType = paymentType
+		closedOrder.checked = true
+		closedOrder.controller = controller
+		controlOrder(closedOrder)
+	}, 500);
+	
 	return (
 		<>
 			<Table
@@ -136,10 +160,7 @@ const UserOrderList = ({ orderList }) => {
 			<Modal closeButton aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
 				<Modal.Header>
 					<Text id="modal-title" size={18}>
-						Welcome to
-						<Text b size={18}>
-							NextUI
-						</Text>
+						Control de pago
 					</Text>
 				</Modal.Header>
 				<Modal.Body>
@@ -153,10 +174,10 @@ const UserOrderList = ({ orderList }) => {
 				</Modal.Body>
 				<Modal.Footer>
 					<Button auto flat color="error" onPress={closeHandler}>
-						Close
+						Cerrar
 					</Button>
 					<Button auto onPress={closeHandler}>
-						Sign in
+						Controlar
 					</Button>
 				</Modal.Footer>
 			</Modal>

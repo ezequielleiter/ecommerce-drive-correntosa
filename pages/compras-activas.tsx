@@ -1,13 +1,14 @@
-import { Badge, Button, Card, Grid, Link, Row, Spacer, Text } from '@nextui-org/react';
+import { Button, Card, Grid, Link, Row, Text } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Header from '../components/navigation/Header';
 import { AlertIcon } from '../components/svg/AlertIcon';
-import { statusDate } from '../helpers/date';
-import { getDayFromDate } from '../helpers/formatDate';
+import { statuSale, statusDate } from '../helpers/date';
+import { getDateFormater, getDayFromDate } from '../helpers/formatDate';
 import { infoMessages } from '../helpers/notify';
 import { useSalesCtx } from '../src/salescontext';
 import Layout from './layout';
+import moment from 'moment';
 export { getServerSideProps } from '../src/ssp/admin';
 
 export default function Admin(props) {
@@ -26,17 +27,24 @@ export default function Admin(props) {
 
 	const allCompraIsClose = compras => {
 		return compras.every(compra => {
-			compra.status === 'close';
+			const date = new Date(compra.closeDate);
+			const fechaCierre = moment(date); // crea un objeto Moment a partir de la fecha inicial
+			const hoy = moment(); // crea un objeto Moment con la fecha y hora actuales
+			const diasTranscurridos = hoy.diff(fechaCierre, 'days');
+			return diasTranscurridos > 30;
 		});
 	};
 
-	function getDay(date) {
-		const fecha = new Date(date);
-		const opciones: Intl.DateTimeFormatOptions = { weekday: 'long' };
-		const dia = fecha.getDate();
-		const mes = fecha.toLocaleString('default', { month: 'long' });
-		const diaDeLaSemana = fecha.toLocaleDateString('es-AR', opciones);
-		return `${diaDeLaSemana} ${dia} de ${mes}`;
+	function getColorHeader(status) {
+		if (status === 'abierta') {
+			return '#00AD8E';
+		}
+		if (status === 'proximamente') {
+			return '#475161';
+		}
+		if (status === 'finalizada') {
+			return '#A1A8B4';
+		}
 	}
 
 	return (
@@ -55,65 +63,75 @@ export default function Admin(props) {
 						</Card>
 					</Grid.Container>
 				) : (
-					compras.map(compra =>
-						compra.status === 'closed' ? null : (
-							<Grid>
-								<Card>
-									<Card.Header style={{ justifyContent: 'space-between' }}>
-										<Text b>{compra.name}</Text>
-										<Badge
-											color={
-												statusDate({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'open'
-													? 'success'
-													: statusDate({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'toOpen'
-													? 'warning'
-													: 'error'
-											}
-										>
-											{statusDate({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'open'
-												? 'Abierta'
-												: statusDate({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'toOpen'
-												? 'Abre pronto'
-												: 'error'}
-										</Badge>
-									</Card.Header>
-									<Card.Divider />
-									<Card.Body>
-										<Text>
-											Podes comprar desde el {getDayFromDate(compra.openDate)} hasta el{' '}
-											{getDayFromDate(compra.closeDate)}
-										</Text>
-									</Card.Body>
-									<Card.Divider />
-									<Card.Body>
-										<Text weight="bold" css={{ textAlign: 'center' }}>
-											Entrega
-										</Text>
-										<Spacer />
-										<Text weight="bold" css={{ textAlign: 'center' }}>
-											{getDay(compra.deliveryDate)} de {compra.openDeliveryHour} a {compra.closeDeliveryHour}
-										</Text>
-										<Spacer />
-										<Text weight="bold" css={{ textAlign: 'center' }}>
-											Lugar de entrega
-										</Text>
-										<Spacer />
-										<Link block isExternal href={compra.locationUrl} target="_blank">
-											{compra.locationName}
-										</Link>
-									</Card.Body>
-									<Card.Divider />
-									<Card.Footer>
-										<Row justify="center">
-											<Button disabled={compra.status === 'toOpen'} onClick={() => navigateProducts(compra)}>
-												{compra.status === 'toOpen' ? 'Abre pronto' : 'Ir a comprar'}
+					compras.map(compra => (
+						<Grid xs={12} sm={3}>
+							<Card>
+								<Card.Header
+									style={{
+										backgroundColor: getColorHeader(
+											statuSale({ openDate: compra.openDate, closeDate: compra.closeDate })
+										),
+										justifyContent: 'space-between'
+									}}
+								>
+									<Text b color="white">
+										{statuSale({ openDate: compra.openDate, closeDate: compra.closeDate }, true)}
+									</Text>
+									<Text color="white">
+										{statuSale({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'proximamente'
+											? `Abre el ${getDateFormater(compra.closeDate).weekdayUppercase} ${
+													getDateFormater(compra.closeDate).number
+											  }`
+											: statuSale({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'abierta'
+											? `Cierra el ${getDateFormater(compra.closeDate).weekdayUppercase} a las ${
+													getDateFormater(compra.closeDate).houre
+											  }hs`
+											: null}
+									</Text>
+								</Card.Header>
+								<Card.Divider />
+								<Card.Body>
+									<Text color="#475161">Compra comunitaria</Text>
+									<Text className="month-sale" color="#475161">
+										{getDateFormater(compra.closeDate).monthName.toUpperCase()}
+									</Text>
+									<Text color="#475161" style={{ paddingTop: '1rem' }}>
+										Entrega
+									</Text>
+									<Text className="day-delivery-bold" color="#475161">
+										{getDateFormater(compra.deliveryDate).weekdayComplete}
+									</Text>
+									<Text className="day-delivery" color="#475161">
+										de {compra.openDeliveryHour} a {compra.closeDeliveryHour}
+									</Text>
+									<Text color="#475161" style={{ paddingTop: '1rem' }}>
+										Lugar de entrega
+									</Text>
+									<Link isExternal href={compra.locationUrl} target="_blank">
+										{compra.locationName}
+									</Link>
+								</Card.Body>
+								<Card.Divider />
+								<Card.Footer>
+									<Row justify="center">
+										{compra.status === 'closed' ? (
+											<Button bordered style={{ width: '100%' }} onClick={() => navigateProducts(compra)}>
+												VER COMPRA
 											</Button>
-										</Row>
-									</Card.Footer>
-								</Card>
-							</Grid>
-						)
-					)
+										) : (
+											<Button
+												style={{ width: '100%' }}
+												disabled={compra.status === 'toOpen' || compra.status === 'closed'}
+												onClick={() => navigateProducts(compra)}
+											>
+												COMPRAR
+											</Button>
+										)}
+									</Row>
+								</Card.Footer>
+							</Card>
+						</Grid>
+					))
 				)}
 			</Grid.Container>
 		</Layout>

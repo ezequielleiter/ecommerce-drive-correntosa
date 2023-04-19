@@ -17,6 +17,9 @@ export interface OrderI {
 	products: Product[];
 	total: number;
 	saleId: string;
+	paymentType?: string;
+	checked?: boolean,
+	controller?: string
 }
 
 interface BaseOrderDocument extends OrderI, Document {}
@@ -38,7 +41,10 @@ const Order = new Schema<BaseOrderDocument>(
 			}
 		],
 		total: 'number',
-		saleId: 'string'
+		saleId: 'string',
+		paymentType: 'string',
+		checked: 'boolean',
+		controller: 'string'
 	},
 	{ timestamps: true }
 );
@@ -119,6 +125,12 @@ Order.statics.updateOrder = async function (orderId, order) {
 	const { products, total } = order;
 	const updatedOrder = await this.findByIdAndUpdate(orderId, { products, total }, { new: true });
 	return updatedOrder;
+};
+
+Order.statics.closeOrder = async function (orderId, order) {
+	const { products, total, checked, controller, paymentType } = order;
+	const closedOrder = await this.findByIdAndUpdate(orderId, { products, total, checked, controller, paymentType }, { new: true });
+	return closedOrder;
 };
 
 Order.statics.deleteAllOrders = async function () {

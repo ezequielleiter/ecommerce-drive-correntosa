@@ -125,4 +125,7 @@ export type productType = {
 export type orderData = {
 	products: productType[];
 	total: number;
+	checked?: boolean;
+	controller?: string;
+	paymentType?: string
 };

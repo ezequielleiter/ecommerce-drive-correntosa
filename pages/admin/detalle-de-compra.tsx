@@ -1,4 +1,4 @@
-import { Container, Grid, Loading } from '@nextui-org/react';
+import { Badge, Container, Grid, Loading, Text } from '@nextui-org/react';
 import Layout from '../layout';
 import Header from '../../components/navigation/Header';
 import UserOrdersList from '../../components/admin/UserOrderList';
@@ -9,7 +9,10 @@ export { getServerSideProps } from '../../src/ssp/admin';
 
 interface CustomerOrder {
 	email: string;
-  }
+	checked: boolean;
+	controller: string;
+	paymentType: string;
+}
 
 export default function OrderDetail(props) {
 	const { saleSelected, orderByUser } = useContext(SalesCtx);
@@ -26,10 +29,25 @@ export default function OrderDetail(props) {
 
 	return (
 		<Layout>
-			<Header user={props.user} title="Detalle de compra de:"  orderUserName={customerOrderList?.email}></Header>
+			<Header user={props.user} title="Detalle de compra de:" orderUserName={customerOrderList?.email}></Header>
 			<Container>
 				{customerOrderList ? (
-					<UserOrdersList orderList={customerOrderList} />
+					<>
+						<Text b>
+							Estado: {customerOrderList.checked ? <Badge color="success">Controlado</Badge> : <Badge>Pendiente</Badge>}
+						</Text>
+						{customerOrderList.checked ? (
+							<>
+								<div>
+									<Text b>Cajero/a:</Text> {customerOrderList.controller}
+								</div>
+								<div>
+									<Text b>Metodo de pago:</Text> {customerOrderList.paymentType}
+								</div>
+							</>
+						) : null}
+						<UserOrdersList orderList={customerOrderList} controller={props.user.name} />
+					</>
 				) : (
 					<Grid>
 						<Loading type="points" />
