@@ -14,6 +14,13 @@ export const getProductsBySale = async (id, page = 1, category = '', search = ''
 	});
 };
 
+export const saveProduct = async (query) => {
+	return await Fetch({
+		url: `/api/products/save-product`,
+		query
+	});
+};
+
 export const getuserOrderBySale = async (userId, saleId) => {
 	return await Fetch<{ userId: string , saleId: string }>({
 		url: `/api/cart/cart-by-sale`,

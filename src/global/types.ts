@@ -43,14 +43,22 @@ export type FileInfoType = Array<{ webViewLink: string; code: number }>;
 
 export type ProductModel = {
 	stock: boolean;
-	code: number;
+	code?: number | null;
 	name: string;
-	minimum: string;
-	price: number;
-	category: string;
+	minimum?: string;
+	price: number; // este es el valor final del producto
+	category?: string;
 	seller: string;
 	google_sheet_id?: string;
 	picture?: string;
+	tags: [],
+	sizes: []; // si es un producto que tiene talles, va a decir los talles que tiene
+	color: []; // si tiene un color, va a decir el color
+	description: string;
+	cost: string, // este es el costo del producot
+	addedValues: [], // esto son los valores agregados al producto
+	measurement: [], //va a tener la unidad de medida del producto (unidad, kg, gr, cl)
+	weight: string | null // si tiene un peso o volumen, va a decir la cantidad
 };
 
 export type statusCart = {

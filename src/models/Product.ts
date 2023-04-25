@@ -12,7 +12,15 @@ const Product = new Schema<BaseProductDocument>({
 	price: { type: 'number' },
 	category: { type: 'string' },
 	seller: { type: 'string' },
-	picture: { type: 'string' }
+	picture: { type: 'string' },
+	tags: { type: [] },
+	sizes: { type: []},
+	color: { type: [] },
+	description: { type: 'string' },
+	cost:  { type: 'string' }, 
+	addedValues: { type: [] }, 
+	measurement: { type: [] }, 
+	weight:  { type: 'string' } 
 });
 
 Product.index({ name: 'text' });
