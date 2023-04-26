@@ -2,6 +2,7 @@
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
+
   img {
     width: 100px !important;
     height: 100px;
@@ -33,7 +34,7 @@
     color: #333333;
     margin: 0px !important;
   }
-  
+
   .title-buttons {
     padding-left: 10px;
     display: flex;
@@ -75,7 +76,82 @@
 }
 
 .loading-text-container {
-   margin: auto; 
-   width: 100%; 
-   padding-top: 10vh;
+  margin: auto;
+  width: 100%;
+  padding-top: 10vh;
+}
+
+.scroll-up-button {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.container-mobile-bar {
+  visibility: hidden;
+}
+
+.mobile-text-bar {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 38px;
+}
+
+.mobile-text-container {
+  width: 181px;
+  height: 38px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 38px;
+  color: #FFFFFF;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.mobile-cart-link {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 38px;
+}
+
+.mobile-link-container {
+  justify-content: space-around;
+}
+
+
+@media (min-width: 320px) and (max-width: 479px) {
+
+  .scroll-up-button {
+    position: fixed !important;
+    right: 25px;
+    top: 25px;
+    z-index: 1;
+    border-radius: 100% !important;
+    background-color: #8995A4 !important;
+  }
+
+
+  .container-mobile-bar {
+    position: fixed;
+    z-index: 10000;
+    top: 92%;
+    width: 100%;
+    height: 30%;
+    padding: 1em;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+    box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px 8px 0px 0px;
+    visibility: visible;
+    background-color: #4F4F4F;
+  }
+
 }
