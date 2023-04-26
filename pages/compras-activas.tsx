@@ -115,7 +115,7 @@ export default function Admin(props) {
 								<Card.Footer>
 									<Row justify="center">
 										{compra.status === 'closed' ? (
-											<Button bordered style={{ width: '100%' }} onClick={() => navigateProducts(compra)}>
+											<Button bordered style={{ width: '100%' }} onClick={() => router.push('/mis-compras')}>
 												VER COMPRA
 											</Button>
 										) : (
