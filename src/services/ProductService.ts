@@ -11,7 +11,17 @@ class ProductService extends BaseService {
 		super();
 	}
 
-	async saveProduct(product: ProductModel) {
+
+	async createProduct(product: ProductModel) {
+		try {
+			await Product.createProduct(product);
+			return { error: false };
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async saveProduct(product) {
 		try {
 			await Product.createProduct(product);
 			return { error: false };

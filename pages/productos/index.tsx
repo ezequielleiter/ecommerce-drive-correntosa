@@ -3,10 +3,10 @@ import Header from '../../components/navigation/Header';
 import Layout from '../layout';
 import { useState } from 'react';
 import SelectComponent from '../../components/ui/SelectElement';
-import { saveProduct } from '../../helpers/content';
 import { useFormValidation } from '../../src/hooks/formHook';
 import { ProductModel } from '../../src/global/types';
 export { getServerSideProps } from '../../src/ssp/cart';
+import { Fetch } from '../../src/hooks/fetchHook';
 
 const initialFormFields: ProductModel = {
 	stock: false,
@@ -18,8 +18,7 @@ const initialFormFields: ProductModel = {
 	sizes: [],
 	color: [],
 	description: '',
-	cost: '',
-	addedValues: [],
+	addedRecharge: [],
 	measurement: [],
 	weight: null
 };
@@ -35,6 +34,7 @@ export default function Productos(props) {
 	const [productor, setProductor] = useState('');
 	const [volumen, setVolumen] = useState('');
 	const [disponible, setDisponible] = useState(false);
+	const [valoresAgregados, setvaloresAgregados] = useState([]);
 
 	const [tags, setTags] = useState([]);
 	const closeHandler = () => {
@@ -47,6 +47,7 @@ export default function Productos(props) {
 	const volumenOptions = ['l', 'ml'];
 	const productorOptions = ['productor A', 'productor B'];
 	const tagsOptions = ['vegano', 'almacen', 'indumentaria'];
+	const valoresAgregadosOptions = ['Envio 5%', 'Correntosa 10%'];
 
 	const form = useFormValidation<ProductModel>(initialFormFields);
 
@@ -64,11 +65,23 @@ export default function Productos(props) {
 			sizes: [],
 			color: [],
 			description: "una descripcion",
+			addedRecharge: [
+				{
+					name: "Envio",
+					type: "%",
+					recharge: 5,
+					_id: "unId"
+				}
+			],
 			cost: 10,
 			addedValues: [],
 			measurement: "unidad"
 		};
-		saveProduct(query).then();
+		Fetch({
+			url: '/api/products/save-product',
+			method: 'POST',
+			data: query
+		});
 	};
 
 
@@ -143,9 +156,9 @@ export default function Productos(props) {
 					<Input clearable bordered labelPlaceholder="Precio neto" />
 					<SelectComponent
 						title={'Valores agregados'}
-						onSelect={setTags}
-						selectedOption={tags}
-						options={tagsOptions}
+						onSelect={setvaloresAgregados}
+						selectedOption={valoresAgregados}
+						options={valoresAgregadosOptions}
 						multiple
 					/>
 				</Modal.Body>

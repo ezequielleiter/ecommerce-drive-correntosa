@@ -70,6 +70,11 @@ const Header: React.FC<HeaderProps> = ({ title, user, cart, saleName, orderUserN
 										<Text onClick={() => router.push('/admin')}>Administrar compras</Text>
 									</Dropdown.Item>
 								) : null}
+								{user.isAdmin || user.isSuperAdmin  ? (
+									<Dropdown.Item key="config">
+										<Text onClick={() => router.push('/configuracion')}>Configuración</Text>
+									</Dropdown.Item>
+								) : null}
 								<Dropdown.Item key="logout" color="error" withDivider>
 									<Text onClick={() => router.push('/api/logout')} color="error">
 										Salir

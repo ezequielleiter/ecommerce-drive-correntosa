@@ -16,11 +16,11 @@ const Product = new Schema<BaseProductDocument>({
 	tags: { type: [] },
 	sizes: { type: []},
 	color: { type: [] },
-	description: { type: 'string' },
-	cost:  { type: 'string' }, 
-	addedValues: { type: [] }, 
+	description: { type: 'string' }, 
+	addedRecharge: { type: [] }, 
 	measurement: { type: [] }, 
-	weight:  { type: 'string' } 
+	weight:  { type: 'string' },
+	finalPrice: {type: "number"}
 });
 
 Product.index({ name: 'text' });

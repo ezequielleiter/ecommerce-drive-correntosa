@@ -9,6 +9,12 @@ export type ProductCart = {
 	seller?: string;
 };
 
+export type Contacto = {
+	email: string; 
+	telefono: string; 
+	direccion: string;
+}
+
 export type UserLogged = {
 	id_google_sheet?: string;
 	id?: string;
@@ -55,10 +61,31 @@ export type ProductModel = {
 	sizes: []; // si es un producto que tiene talles, va a decir los talles que tiene
 	color: []; // si tiene un color, va a decir el color
 	description: string;
-	cost: string, // este es el costo del producot
-	addedValues: [], // esto son los valores agregados al producto
+	addedRecharge: [], // esto son los valores agregados al producto
 	measurement: [], //va a tener la unidad de medida del producto (unidad, kg, gr, cl)
-	weight: string | null // si tiene un peso o volumen, va a decir la cantidad
+	weight: string | null, // si tiene un peso o volumen, va a decir la cantidad
+	finalPrice?: number // precio final con el recargo sumado
+};
+
+export type ProductorModel = {
+	name: string;
+	picture?: string;
+	tags: string[],
+	description: string;
+	contact: Contacto
+};
+
+export type TagModel = {
+	name: string;
+	description: string;
+	color: string
+};
+
+export type AgregadoModel = {
+	name: string;
+	type: string;
+	value: string;
+	discount: boolean
 };
 
 export type statusCart = {
@@ -91,6 +118,45 @@ export type createSaleType = {
 	locationUrl: string;
 };
 
+export type createProductorType = {
+	name?: string;
+	picture?: string;
+	tags?: string[],
+	description?: string;
+	contact?: Contacto
+};
+
+export type errorProductorType = {
+	name?: string;
+	description?: string
+};
+
+export type createTagType = {
+	name?: string;
+	description?: string;
+	color?: string
+};
+
+export type errorTagType = {
+	name?: string;
+	description?: string;
+	color?: string
+};
+
+export type createAgregadoType = {
+	name?: string;
+	value?: string;
+	type?: string;
+	discount?: boolean
+};
+
+export type errorAgregadoType = {
+	name?: string;
+	value?: string;
+	type?: string;
+	discount?: boolean
+};
+
 export type errorsFormType = {
 	openDate?: string;
 	closeDate?: string;
@@ -106,7 +172,7 @@ export type fetchData<T> = {
 	url: string;
 	method?: string;
 	data?: T;
-	query?: T;
+	query?: T | any;
 	onSuccess?(response: any): void;
 	onError?(error: any): void;
 };

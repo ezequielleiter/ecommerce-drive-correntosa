@@ -1,13 +1,11 @@
-import { useState } from 'react';
-
 function SelectComponent({ title, options, onSelect, selectedOption, multiple = false }) {
 	const handleOptionChange = event => {
 		onSelect(event.target.value);
 	};
 
   const handleMultiOptionChange = event => {
-    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
-    onSelect(selectedOptions);
+    const selectedOptions = Array.from(event.target.selectedOptions, (option:any) => option.value);
+    onSelect(selectedOptions); 
 	};
 	return (
 		<div>
