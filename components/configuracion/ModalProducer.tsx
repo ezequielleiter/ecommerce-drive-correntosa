@@ -90,7 +90,7 @@ export const ModalProducer = ({
 					) : null}
 				</Grid>
 				<MultiSelect
-					productorSeletedItems={productorSelected ? productorSelected.tags : null}
+					selectedTitle="Tags"
 					itemsToSelect={tags}
 					setSelecteItem={setSelectedTags}
 					selectedItems={selectedTags}

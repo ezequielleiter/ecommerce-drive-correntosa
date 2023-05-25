@@ -36,7 +36,8 @@ class ConfigService extends BaseService {
 		openDeliveryHour: string,
 		closeDeliveryHour: string,
 		locationName: string,
-		locationUrl: string
+		locationUrl: string,
+		productsIds: any[]
 	) {
 		try {
 			await Config.updateDates(
@@ -48,7 +49,8 @@ class ConfigService extends BaseService {
 				openDeliveryHour,
 				closeDeliveryHour,
 				locationName,
-				locationUrl
+				locationUrl,
+				productsIds
 			);
 			return { error: false };
 		} catch (e) {
@@ -64,7 +66,8 @@ class ConfigService extends BaseService {
 		openDeliveryHour: string,
 		closeDeliveryHour: string,
 		locationName: string,
-		locationUrl: string
+		locationUrl: string,
+		productsIds: any[]
 	) {
 		try {
 			await Config.createSale(
@@ -75,7 +78,8 @@ class ConfigService extends BaseService {
 				openDeliveryHour,
 				closeDeliveryHour,
 				locationName,
-				locationUrl
+				locationUrl,
+				productsIds
 			);
 			return { error: false };
 		} catch (e) {

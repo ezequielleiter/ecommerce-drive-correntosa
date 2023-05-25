@@ -1,15 +1,18 @@
-import { Button, Container, Grid, Input, Loading, Text } from '@nextui-org/react';
-import { FC, useState } from 'react';
+import { Avatar, Button, Container, Grid, Input, Loading, Table, Text } from '@nextui-org/react';
+import { FC, useEffect, useState } from 'react';
 import { datesFormType, errorsFormType, statusCart } from '../../src/global/types';
 import { Fetch } from '../../src/hooks/fetchHook';
 import { useFormValidation } from '../../src/hooks/formHook';
 import { formatDate, getMinCloseDate } from '../../helpers/date';
 import { useSalesCtx } from '../../src/salescontext';
+import calculateFinalPrice from '../../src/helpers/prices/calculateFinalPrice';
 
 type props = {
 	setEditing(status: boolean): void;
 	setCurrentStatus(status: statusCart): void;
 	initialStatus: any;
+	productos: any;
+	modificadores: any;
 };
 
 const initialFormFields: datesFormType = {
@@ -20,18 +23,18 @@ const initialFormFields: datesFormType = {
 	openDeliveryHour: '',
 	closeDeliveryHour: '',
 	locationName: '',
-	locationUrl: ''
+	locationUrl: '',
+	productsIds: ''
 };
 const initialFormErrors: errorsFormType = {};
 
-const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus }) => {
+const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus, productos, modificadores }) => {
 	const sale = useSalesCtx();
 	const form = useFormValidation<datesFormType>(initialFormFields);
 	const [errors, setErrors] = useState(initialFormErrors);
 	const [fetching, setFetching] = useState({ error: null, loading: false, done: false });
-
+	const [productsIds, setProductsIds] = useState([]);
 	const today = formatDate(new Date());
-
 	const handleChangeField = (e, property: keyof datesFormType) => {
 		const value = e.target.value;
 		form.setValue(property, value);
@@ -52,7 +55,8 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 				openDeliveryHour: form.fields.openDeliveryHour,
 				closeDeliveryHour: form.fields.closeDeliveryHour,
 				locationName: form.fields.locationName,
-				locationUrl: form.fields.locationUrl
+				locationUrl: form.fields.locationUrl,
+				productsIds
 			},
 			onSuccess: response => {
 				sale.selectSale(response);
@@ -72,7 +76,8 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 			openDeliveryHour: 'Debe ingresar una hora de entrega',
 			closeDeliveryHour: 'Debe ingresar una hora de cierre',
 			locationName: 'Debe ingresar el nombre del lugar de entrega',
-			locationUrl: 'Debe ingresar el link del lugar de entrega'
+			locationUrl: 'Debe ingresar el link del lugar de entrega',
+			productsIds: 'Debe ingresar al menos un producto'
 		});
 		const validateIntervalDates = new Date(form.closeDate) <= new Date(form.openDate);
 
@@ -81,6 +86,32 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 		}
 
 		return !localErrors;
+	};
+
+	useEffect(() => {
+		form.setValue(null, initialStatus);
+		setProductsIds(initialStatus.productsIds);
+	}, []);
+
+	const handleSelectionChange = e => {
+		if (e === 'all') {
+			const allProductsIdToAdd = productos.map(p => p._id.toString());
+			setProductsIds(allProductsIdToAdd);
+		} else {
+			const productsIdToAdd = Array.from(e);
+			setProductsIds(productsIdToAdd);
+		}
+	};
+
+	const findModificadores = modificadoresIds => {
+		const completeModificadores = [];
+		modificadoresIds.forEach(modificadorId => {
+			const findCompleteModificador = modificadores.find(m => m._id.toString() === modificadorId);
+			if (findCompleteModificador) {
+				completeModificadores.push(findCompleteModificador);
+			}
+		});
+		return completeModificadores;
 	};
 
 	return (
@@ -175,7 +206,49 @@ const CartDatesForm: FC<props> = ({ setEditing, setCurrentStatus, initialStatus 
 					<Text color="error">{errors.locationUrl ?? ''}</Text>
 				</Grid>
 			</Grid.Container>
-
+			<Table
+				aria-label="Example table with static content"
+				css={{
+					height: 'auto',
+					minWidth: '100%'
+				}}
+				compact
+				selectionMode="multiple"
+				lined
+				headerLined
+				shadow={false}
+				sticked
+				onSelectionChange={handleSelectionChange}
+				selectedKeys={productsIds}
+			>
+				<Table.Header>
+					<Table.Column>Nombre</Table.Column>
+					<Table.Column>Precio neto</Table.Column>
+					<Table.Column>Precio venta</Table.Column>
+				</Table.Header>
+				<Table.Body>
+					{productos.map(producto =>
+						!producto.stock ? null : (
+							<Table.Row key={producto._id}>
+								<Table.Cell>
+									<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+										<Avatar squared src={`https://drive.google.com/uc?id=${producto.picture}&export=download`} />
+										<Text css={{ paddingLeft: '1rem' }}>{producto.name}</Text>
+									</div>
+								</Table.Cell>
+								<Table.Cell>$ {producto.price}</Table.Cell>
+								<Table.Cell>
+									${' '}
+									{calculateFinalPrice({
+										price: producto.price,
+										modificadoresSeleted: findModificadores(producto.modificadoresIds)
+									})}
+								</Table.Cell>
+							</Table.Row>
+						)
+					)}
+				</Table.Body>
+			</Table>
 			<Button
 				onClick={() => setEditing(false)}
 				className={fetching.loading ? 'button-total-disabled' : 'button-cancel'}

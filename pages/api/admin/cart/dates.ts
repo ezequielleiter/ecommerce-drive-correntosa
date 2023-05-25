@@ -16,7 +16,8 @@ export default async function updateCartDates(req, res) {
 				openDeliveryHour,
 				closeDeliveryHour,
 				locationName,
-				locationUrl
+				locationUrl,
+				productsIds
 			} = body;
 			if (!openDate || !closeDate) {
 				return res.status(400).json({ error: true, message: 'Missing dates' });
@@ -31,7 +32,8 @@ export default async function updateCartDates(req, res) {
 				openDeliveryHour,
 				closeDeliveryHour,
 				locationName,
-				locationUrl
+				locationUrl,
+				productsIds
 			);
 			const newStatus = await configService.getCartStatus();
 			res.status(200).json({ ...newStatus });
@@ -39,7 +41,7 @@ export default async function updateCartDates(req, res) {
 			const configService = container.resolve(ConfigService);
 			const body = JSON.parse(req.body);
 
-			let { openDate, closeDate, name, deliveryDate, openDeliveryHour, closeDeliveryHour, locationName, locationUrl } =
+			let { openDate, closeDate, name, deliveryDate, openDeliveryHour, closeDeliveryHour, locationName, locationUrl, productsIds } =
 				body;
 			if (!openDate || !closeDate) {
 				return res.status(400).json({ error: true, message: 'Missing dates' });
@@ -53,7 +55,8 @@ export default async function updateCartDates(req, res) {
 				openDeliveryHour,
 				closeDeliveryHour,
 				locationName,
-				locationUrl
+				locationUrl,
+				productsIds
 			);
 		}
 	} catch (error) {

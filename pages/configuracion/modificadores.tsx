@@ -54,7 +54,7 @@ export default function ValoresAgregados(props) {
 
 	useEffect(() => {
 		Fetch({
-			url: `/api/agregado`,
+			url: `/api/modificadores`,
 			method: 'GET',
 			onError: e => {
 				console.warn(`error al buscar tags`, e);
@@ -72,7 +72,7 @@ export default function ValoresAgregados(props) {
         }
 		const query = modificadorIdToEdit ? {modificadorIdToEdit} : ''
 		Fetch({
-			url: `/api/agregado`,
+			url: `/api/modificadores`,
 			method: modificadorIdToEdit ? 'PUT': 'POST',
 			data: { ...form.fields },
 			query,
@@ -111,7 +111,7 @@ export default function ValoresAgregados(props) {
 	};
 	return (
 		<Layout {...props}>
-			<Header user={props.user} title={'Modificadores'} />
+			<Header user={props.user} title={'Modificadores de precio'} />
 			<Container>
 				<Button onPress={() => setVisible(true)}> Agregar modificador </Button>
 				{loading ? null : (

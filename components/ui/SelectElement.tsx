@@ -1,52 +1,34 @@
-function SelectComponent({ title, options, onSelect, selectedOption, multiple = false }) {
-	const handleOptionChange = event => {
-		onSelect(event.target.value);
+import { Dropdown } from '@nextui-org/react';
+
+function SelectComponent({ title, options, onSelect, selectedOption, multiple = false, useId = false, selectedTitle = '' }) {
+	const handleOptionChange = e => {
+		const value = Array.from(e);
+		onSelect(value[0]);
 	};
 
-  const handleMultiOptionChange = event => {
-    const selectedOptions = Array.from(event.target.selectedOptions, (option:any) => option.value);
-    onSelect(selectedOptions); 
+	const handleMultiOptionChange = event => {
+		const selectedOptions = Array.from(event);
+		onSelect(selectedOptions);
 	};
 	return (
-		<div>
-			<label htmlFor="selectOption">{title}</label>
-			<select id="selectOption" multiple={multiple} value={selectedOption} onChange={multiple ? handleMultiOptionChange : handleOptionChange}>
-				<option value="">Selecciona una opción</option>
-				{options.map((option, index) => (
-					<option key={index} value={option}>
-						{option}
-					</option>
+		<div style={{paddingTop: "1rem"}}>
+		<Dropdown>
+			<Dropdown.Button flat color="secondary">
+				{selectedTitle ? selectedTitle : selectedOption ? selectedOption.name : title}
+			</Dropdown.Button>
+			<Dropdown.Menu
+				aria-label="Multiple selection actions"
+				color="secondary"
+				disallowEmptySelection
+				selectionMode={multiple ? "multiple" : "single"}
+				selectedKeys={"asdsa"}
+				onSelectionChange={e => multiple ? handleMultiOptionChange(e) : handleOptionChange(e)}
+			>
+				{options.map(item => (
+					<Dropdown.Item key={useId ? item._id.toString() : item}>{useId ? item.name : item}</Dropdown.Item>
 				))}
-			</select>
-      <style jsx>{`
-        select {
-          background-color: white;
-          cursor: pointer;
-          outline: none;
-          position: relative;
-          width: 100%;
-          z-index: 1;
-        }
-        select:after {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 1em;
-          height: 1em;
-          background-color: #ccc;
-          pointer-events: none;
-          z-index: -1;
-        }
-        select:focus:after {
-          background-color: #0070f3;
-        }
-        select option {
-          background-color: white;
-          color: #333;
-        }
-        `}
-      </style>
+			</Dropdown.Menu>
+		</Dropdown>
 		</div>
 	);
 }

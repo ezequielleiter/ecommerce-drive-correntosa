@@ -30,6 +30,24 @@ class ProductService extends BaseService {
 		}
 	}
 
+	async updateProduct(productoId, product) {
+		try {
+			await Product.updateProduct(productoId, product);
+			return { error: false };
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async bulkUpdateProduct(products) {
+		try {
+			const result = await Product.bulkUpdateProduct(products);
+			return result;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
 	async saveProductForSale(products, salesId) {
 		try {
 			//hay que handlear el erro
@@ -44,6 +62,15 @@ class ProductService extends BaseService {
 	async getProducts(category, page: number = 1) {
 		try {
 			const products = await Product.getProducts(category, page);
+			return products;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async getAllProducts() {
+		try {
+			const products = await Product.getAllProducts();
 			return products;
 		} catch (e) {
 			throw new ApiException(e);

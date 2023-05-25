@@ -49,7 +49,7 @@ export type FileInfoType = Array<{ webViewLink: string; code: number }>;
 
 export type ProductModel = {
 	stock: boolean;
-	code?: number | null;
+	code?: number | string ;
 	name: string;
 	minimum?: string;
 	price: number; // este es el valor final del producto
@@ -61,10 +61,9 @@ export type ProductModel = {
 	sizes: []; // si es un producto que tiene talles, va a decir los talles que tiene
 	color: []; // si tiene un color, va a decir el color
 	description: string;
-	addedRecharge: [], // esto son los valores agregados al producto
-	measurement: [], //va a tener la unidad de medida del producto (unidad, kg, gr, cl)
+	modificadoresIds: [], // esto son los valores agregados al producto
+	measurement: string, //va a tener la unidad de medida del producto (unidad, kg, gr, cl)
 	weight: string | null, // si tiene un peso o volumen, va a decir la cantidad
-	finalPrice?: number // precio final con el recargo sumado
 };
 
 export type ProductorModel = {
@@ -105,6 +104,7 @@ export type datesFormType = {
 	closeDeliveryHour: string;
 	locationName: string;
 	locationUrl: string;
+	productsIds: string | any[]
 };
 
 export type createSaleType = {
@@ -116,6 +116,7 @@ export type createSaleType = {
 	closeDeliveryHour: string;
 	locationName: string;
 	locationUrl: string;
+	productsIds: string | any[]
 };
 
 export type createProductorType = {
@@ -124,6 +125,37 @@ export type createProductorType = {
 	tags?: string[],
 	description?: string;
 	contact?: Contacto
+};
+
+export type createProductoType = {
+	name?: string, //nombre,
+	description?: string, //descripcion del producto
+	measurement?: string, //va a tener la unidad de medida del producto (unidad, kg, gr, cl)
+	picture?: string,
+	weight?: string, //aca va el peso, gramo o cantidad de unidades del producto,
+	sizes?: [], // si tiene talles, los talles en un string por ahora
+	color?: [], // si tiene colores, los colores en un string por ahora
+	seller?: string, //aca va el Id del productor,
+	tags?: [],
+	stock?: boolean,
+	price?: number, // precio neto del producto sin agregados
+	modificadoresIds?: [],
+	code?: string;
+};
+
+export type createErrorProductoType = {
+	name?: string, //nombre,
+	description?: string, //descripcion del producto
+	measurement?: string, //va a tener la unidad de medida del producto (unidad, kg, gr, cl)
+	picture?: string,
+	weight?: string, //aca va el peso, gramo o cantidad de unidades del producto,
+	sizes?: string, // si tiene talles, los talles en un string por ahora
+	color?: string, // si tiene colores, los colores en un string por ahora
+	seller?: string, //aca va el Id del productor,
+	tags?: string,
+	stock?: string,
+	price?: string, // precio neto del producto sin agregados
+	modificadoresIds?: string
 };
 
 export type errorProductorType = {

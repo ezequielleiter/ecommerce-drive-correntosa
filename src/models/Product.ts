@@ -6,21 +6,20 @@ interface BaseProductDocument extends ProductModel, Document {}
 
 const Product = new Schema<BaseProductDocument>({
 	stock: { type: 'boolean' },
-	code: { type: 'number' },
-	name: { type: 'string', index: true },
+	code: { type: 'string' },
+	name: { type: 'string' },
 	minimum: { type: 'string' },
 	price: { type: 'number' },
 	category: { type: 'string' },
 	seller: { type: 'string' },
 	picture: { type: 'string' },
 	tags: { type: [] },
-	sizes: { type: []},
+	sizes: { type: [] },
 	color: { type: [] },
-	description: { type: 'string' }, 
-	addedRecharge: { type: [] }, 
-	measurement: { type: [] }, 
-	weight:  { type: 'string' },
-	finalPrice: {type: "number"}
+	description: { type: 'string' },
+	weight: { type: 'string' },
+	measurement: { type: 'string' },
+	modificadoresIds: { type: [] }
 });
 
 Product.index({ name: 'text' });
@@ -32,7 +31,7 @@ Product.statics.getProducts = async function (category: string, page: number) {
 
 	const query = category ? { category } : {};
 	const products = await this.find(query)
-		.select({ _id: 0, __v: 0 })
+		.select({ __v: 0 })
 		.limit(limit)
 		.skip(limit * (page - 1))
 		.sort({ code: 1 });
@@ -43,6 +42,45 @@ Product.statics.getProducts = async function (category: string, page: number) {
 
 Product.statics.createProduct = async function (product: ProductModel) {
 	await this.create(product);
+};
+
+Product.statics.getAllProducts = async function () {
+	const allProducts = await this.find({}).select({ __v: 0 });
+	return allProducts;
+};
+
+Product.statics.updateProduct = async function (productoId, product: { productoId: {}; product: ProductModel }) {
+	const updateProduct = await this.findByIdAndUpdate(productoId, product, { new: true });
+	return updateProduct;
+};
+
+Product.statics.bulkUpdateProduct = async function (products) {
+	const errors = [];
+	let productUpdate = 0;
+
+	for (let i = 0; i < products.length; i++) {
+		const product = products[i];
+		console.log("EN BULK", product);
+		
+		try {
+			if (product.code) {
+				await this.findByIdAndUpdate(product.code, product, { new: true });
+			} else {
+				await this.findByIdAndUpdate(product._id, product, { new: true });
+			}
+			productUpdate++;
+		} catch (error) {
+			if (error.path === '_id') {
+				error.message = `El id del producto es incorrecto, revise el id: ${error.value}`;
+			}
+			errors.push({ _id: product._id, error: error.message });
+		}
+	}
+
+	return {
+		productUpdate,
+		errors
+	};
 };
 
 // Product.statics.getByCategory = async function (category: string, page: number) {

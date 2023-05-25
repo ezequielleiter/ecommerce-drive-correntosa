@@ -10,6 +10,7 @@ export interface ConfigI {
 	closeDeliveryHour: String | null;
 	locationName: String | null;
 	locationUrl: String | null;
+	productsIds: any[]
 }
 
 interface Product {
@@ -30,7 +31,8 @@ const Config = new Schema<BaseConfigDocument>({
 	openDeliveryHour: { type: 'string' || null },
 	closeDeliveryHour: { type: 'string' || null },
 	locationName: { type: 'string' || null },
-	locationUrl: { type: 'string' || null }
+	locationUrl: { type: 'string' || null },
+	productsIds: { type: [] }
 });
 
 Config.statics.getCartStatus = async function () {
@@ -82,7 +84,8 @@ Config.statics.createSale = async function (
 	openDeliveryHour,
 	closeDeliveryHour,
 	locationName,
-	locationUrl
+	locationUrl,
+	productsIds
 ) {
 	const sale = await this.insertMany({
 		openDate: openDate.toString(),
@@ -92,7 +95,8 @@ Config.statics.createSale = async function (
 		openDeliveryHour,
 		closeDeliveryHour,
 		locationName,
-		locationUrl
+		locationUrl,
+		productsIds
 	});
 	return sale[0];
 };
@@ -106,7 +110,8 @@ Config.statics.updateDates = async function (
 	openDeliveryHour,
 	closeDeliveryHour,
 	locationName,
-	locationUrl
+	locationUrl,
+	productsIds
 ) {
 	await this.findOneAndUpdate(
 		{ _id: id },
@@ -118,7 +123,8 @@ Config.statics.updateDates = async function (
 			openDeliveryHour,
 			closeDeliveryHour,
 			locationName,
-			locationUrl
+			locationUrl,
+			productsIds
 		}
 	);
 };
