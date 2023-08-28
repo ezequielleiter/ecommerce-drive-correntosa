@@ -90,6 +90,7 @@ export default function Admin(props) {
 							setOrdersCount={setOrdersCount}
 							status={saleSelected.status}
 							saleId={saleSelected._id}
+							orders={orderBySale}
 						/>
 					</Grid>
 				</Grid.Container>

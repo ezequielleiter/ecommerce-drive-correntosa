@@ -60,8 +60,6 @@ Product.statics.bulkUpdateProduct = async function (products) {
 
 	for (let i = 0; i < products.length; i++) {
 		const product = products[i];
-		console.log("EN BULK", product);
-		
 		try {
 			if (product.code) {
 				await this.findByIdAndUpdate(product.code, product, { new: true });
@@ -81,6 +79,19 @@ Product.statics.bulkUpdateProduct = async function (products) {
 		productUpdate,
 		errors
 	};
+};
+
+Product.statics.getProductsByIds = async function (productsIds) {
+	const limit = 60;	
+	// const productsCount = category ? await this.countDocuments({ category }) : await this.countDocuments();
+	const query = { "_id": { "$in": productsIds } }
+	const products = await this.find(query)
+		.select({ __v: 0 })
+		// .limit(limit)
+		// .skip(limit * (page - 1))
+		// .sort({ code: 1 });
+	// const totalPages = Math.ceil(productsCount / limit);
+	return products;
 };
 
 // Product.statics.getByCategory = async function (category: string, page: number) {

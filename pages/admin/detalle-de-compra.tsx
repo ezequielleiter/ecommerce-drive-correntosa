@@ -5,6 +5,7 @@ import UserOrdersList from '../../components/admin/UserOrderList';
 import { useContext, useEffect, useState } from 'react';
 import { getOrderBySale } from '../../helpers/content';
 import { SalesCtx } from '../../src/salescontext';
+import toObjet from '../../src/helpers/toObjet';
 export { getServerSideProps } from '../../src/ssp/admin';
 
 interface CustomerOrder {
@@ -19,11 +20,9 @@ export default function OrderDetail(props) {
 	const [customerOrderList, setCustomerOrderList] = useState<CustomerOrder>();
 
 	useEffect(() => {
-		getOrderBySale(saleSelected._id).then(ordersBySales => {
-			const customerOrder = ordersBySales.find(order => {
-				return order.userId === orderByUser;
-			});
-			setCustomerOrderList(customerOrder);
+		getOrderBySale(saleSelected._id, orderByUser).then(ordersBySales => {
+			const result = JSON.parse(ordersBySales)
+			setCustomerOrderList(result);
 		});
 	}, []);
 

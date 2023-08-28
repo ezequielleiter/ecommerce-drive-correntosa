@@ -17,12 +17,13 @@ const ProductDetailCard: FC<ProductCartProps> = ({ product, deleteProduct, updat
 	return (
 		<Grid.Container className="product-cart">
 			<Grid xs={4} className="product-image-container" justify="center">
-				<Avatar src={product.picture} css={{ size: '$20' }} />
+				<Avatar src={`https://drive.google.com/uc?id=${product.picture}&export=download`} css={{ size: '$20' }} />
 			</Grid>
 			<Grid xs={8} className="product-info">
 				<div className="title-buttons">
 					<div>
-						<Text className="product-name">{product.name}</Text>
+						<Text weight="bold">{product.name}</Text>
+						<Text> c/u: ${product.finalPrice}</Text>
 						<small className="product-description">{product.minimum}</small>
 					</div>
 					<div className="product-buttons">
@@ -43,7 +44,7 @@ const ProductDetailCard: FC<ProductCartProps> = ({ product, deleteProduct, updat
 				</div>
 				<div className="button-price">
 					<FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faTrash} onClick={() => deleteProduct(product)} />
-					<Text className="product-price">${product.total.toFixed(2)}</Text>
+					<Text className="product-price">${product.finalPrice * product.qty}</Text>
 				</div>
 			</Grid>
 		</Grid.Container>

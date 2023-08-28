@@ -98,6 +98,15 @@ class OrderService extends BaseService {
 			throw new ApiException(e);
 		}
 	}
+
+	async getOrderBySaleAndUser(saleId, userId) {
+		try {
+			const userOrder = await Order.getOrderBySaleAndUser(saleId, userId);
+			return userOrder;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
 }
 
 export default OrderService;

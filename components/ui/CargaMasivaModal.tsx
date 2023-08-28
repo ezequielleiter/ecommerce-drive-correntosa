@@ -16,10 +16,6 @@ const CargaMasivaModal = ({ visible, closeHandler }) => {
 	};
 
 	const onUploadFile = () => {
-		// const formData = new FormData();
-		// formData.append('file', file);
-		console.log(file);
-		
 		fetch('/api/products/bulkupload-products', {
 			method: 'POST',
 			body: file

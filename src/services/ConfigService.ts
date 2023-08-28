@@ -27,6 +27,14 @@ class ConfigService extends BaseService {
 		}
 	}
 
+	async getSaleById(saleId) {
+		try {
+			const sale = await Config.getSale(saleId);
+			return JSON.parse(JSON.stringify(sale));
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
 	async setDates(
 		openDate: string,
 		closeDate: string,

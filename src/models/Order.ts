@@ -8,7 +8,8 @@ interface Product {
 	qty: number;
 	total: number;
 	picture: string;
-	seller: string
+	seller: string;
+	productId: string;
 }
 
 export interface OrderI {
@@ -18,8 +19,8 @@ export interface OrderI {
 	total: number;
 	saleId: string;
 	paymentType?: string;
-	checked?: boolean,
-	controller?: string
+	checked?: boolean;
+	controller?: string;
 }
 
 interface BaseOrderDocument extends OrderI, Document {}
@@ -37,7 +38,8 @@ const Order = new Schema<BaseOrderDocument>(
 				qty: 'number',
 				total: 'number',
 				picture: 'string',
-				seller: 'string'
+				seller: 'string',
+				productId: 'string'
 			}
 		],
 		total: 'number',
@@ -64,6 +66,11 @@ Order.statics.getUserOrder = async function (email: string) {
 	return order;
 };
 
+Order.statics.getOrderBySaleAndUser = async function (saleId, userId) {
+	const order = await this.findOne({ saleId, userId });
+	return order;
+};
+
 Order.statics.getUserOrderBySale = async function (userId: string, saleId: string) {
 	const userorder = await this.find({});
 	const userOrderToJSON = JSON.stringify(userorder);
@@ -73,18 +80,18 @@ Order.statics.getUserOrderBySale = async function (userId: string, saleId: strin
 	});
 	if (!order) {
 		const newOrder = {
-			userId: "",
-			email: "",
+			userId: '',
+			email: '',
 			products: [],
 			total: 0
 		};
-	return newOrder
+		return newOrder;
 	}
 	return order;
 };
 
 Order.statics.getOrderBySale = async function (saleId: string) {
-	const orders = await this.find({ saleId: saleId.toString()});
+	const orders = await this.find({ saleId: saleId.toString() });
 	const ordersToJSON = JSON.stringify(orders);
 	const orderParse = JSON.parse(ordersToJSON);
 	const ordersBySale = orderParse.filter(orderByUser => {
@@ -123,13 +130,33 @@ Order.statics.getOrdersToPost = async function () {
 
 Order.statics.updateOrder = async function (orderId, order) {
 	const { products, total } = order;
-	const updatedOrder = await this.findByIdAndUpdate(orderId, { products, total }, { new: true });
+	const productToSave = products.map(p => {
+		return {
+			productId: p._id,
+			qty: p.qty
+		};
+	});
+	const updatedOrder = await this.findByIdAndUpdate(orderId, { products: productToSave, total }, { new: true });
 	return updatedOrder;
 };
 
 Order.statics.closeOrder = async function (orderId, order) {
 	const { products, total, checked, controller, paymentType } = order;
-	const closedOrder = await this.findByIdAndUpdate(orderId, { products, total, checked, controller, paymentType }, { new: true });
+	const prepateToSaveProducts = products.map(p => {
+		return {
+			name: p.name,
+			price: p.price,
+			qty: p.qty,
+			picture: p.picture,
+			productId: p._id,
+			finalPrice: p.finalPrice
+		};
+	});
+	const closedOrder = await this.findByIdAndUpdate(
+		orderId,
+		{ products: prepateToSaveProducts, total, checked, controller, paymentType },
+		{ new: true }
+	);
 	return closedOrder;
 };
 

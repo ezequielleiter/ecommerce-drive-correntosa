@@ -13,24 +13,23 @@ type props = {
 };
 
 const ProductCard: FC<props> = ({ item, addProduct }) => {
-	const [quantity, setQuantity] = useState(1);
-
+	const [quantity, setQuantity] = useState(1);	
 	return (
 		<Grid xs={12} sm={12} md={12} lg={12} xl={12}>
 			<Card css={{ margin: 0, letterSpacing: 0 }}>
 				<Card.Body className="product-container">
 					<Grid.Container gap={1} justify="space-around">
 						<Grid xs={4}>
-							<Image objectFit="contain" src={item.picture} />
+							<Image objectFit="contain" src={`https://drive.google.com/uc?id=${item.picture}&export=download`} />
 						</Grid>
 						<Grid xs={8} className="details-container" lg={6} md={6} xl={6}>
 							<Text className="product-name">{item.name}</Text>
 							<Text className="product-reference">{item.minimum}</Text>
 							<Text className="product-supplier">
 								<FontAwesomeIcon icon={faFaceLaughBeam} />
-								{item.seller}
+								{item.seller.name}
 							</Text>
-							<Text className="product-price">${item.price}</Text>
+							<Text className="product-price">${item.finalPrice}</Text>
 						</Grid>
 					</Grid.Container>
 					<Row>

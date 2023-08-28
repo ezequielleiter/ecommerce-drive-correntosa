@@ -3,6 +3,7 @@ import { Table, User, Button, Text, Modal, Radio, Input } from '@nextui-org/reac
 import { Fetch } from '../../src/hooks/fetchHook';
 import debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
+import sumTotals from '../../src/helpers/sumTotal';
 
 const counterContext = {
 	order: {}
@@ -17,7 +18,7 @@ function orderReducer(state, action) {
 			};
 		case 'ADD_PRODUCT':
 			state.order.total = action.total;
-			state.order.products = action.products;
+			state.order.products = action.products;		
 			return {
 				...state
 			};
@@ -59,9 +60,6 @@ const UserOrderList = ({ orderList, controller }) => {
 		let listProductToUpdate = order.products;
 		const indexProduct = order.products.findIndex(product => product._id.toString() === productId);
 		listProductToUpdate[indexProduct].qty = qty + 1;
-		listProductToUpdate[indexProduct].total =
-			listProductToUpdate[indexProduct].price * listProductToUpdate[indexProduct].qty;
-		const sumTotals = products => products.reduce((total, product) => product.total + total, 0);
 		const sumaTotal = sumTotals(listProductToUpdate);
 		dispatch({ type: 'ADD_PRODUCT', products: listProductToUpdate, total: sumaTotal });
 	};
@@ -73,9 +71,6 @@ const UserOrderList = ({ orderList, controller }) => {
 		let listProductToUpdate = order.products;
 		const indexProduct = order.products.findIndex(product => product._id.toString() === productId);
 		listProductToUpdate[indexProduct].qty = qty - 1;
-		listProductToUpdate[indexProduct].total =
-			listProductToUpdate[indexProduct].price * listProductToUpdate[indexProduct].qty;
-		const sumTotals = products => products.reduce((total, product) => product.total + total, 0);
 		const sumaTotal = sumTotals(listProductToUpdate);
 		dispatch({ type: 'ADD_PRODUCT', products: listProductToUpdate, total: sumaTotal });
 	};
@@ -97,7 +92,7 @@ const UserOrderList = ({ orderList, controller }) => {
 	const closeHandler = () => {
 		setVisible(false);
 	}
-	
+
 	return (
 		<>
 			<Table
@@ -149,8 +144,8 @@ const UserOrderList = ({ orderList, controller }) => {
 									</Button>
 								</div>
 							</Table.Cell>
-							<Table.Cell>$ {product.price}</Table.Cell>
-							<Table.Cell>$ {product.total}</Table.Cell>
+							<Table.Cell>$ {product.finalPrice}</Table.Cell>
+							<Table.Cell>$ {product.finalPrice * product.qty}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>

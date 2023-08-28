@@ -48,6 +48,15 @@ class ProductService extends BaseService {
 		}
 	}
 
+	async getProductsByIds(productsIds) {
+		try {
+			const result = await Product.getProductsByIds(productsIds);			
+			return result;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
 	async saveProductForSale(products, salesId) {
 		try {
 			//hay que handlear el erro

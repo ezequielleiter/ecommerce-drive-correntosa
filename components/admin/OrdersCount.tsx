@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Loading, Text } from '@nextui-org/react';
+import { Button, Container, Divider, Grid, Loading, Modal, Text } from '@nextui-org/react';
 import { FC, useState } from 'react';
 import { FileSpreadsheet } from '../svg/FileSpreadsheet';
 import { PdfIcon } from '../svg/PdfIcon';
@@ -7,11 +7,14 @@ type props = {
 	setOrdersCount(count: number): void;
 	status: string;
 	saleId: string;
+	orders: [];
 };
 
-const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId }) => {
+const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId, orders }) => {
 	const CERRADA = 'Cerrada';
+
 	const [fetching, setFetching] = useState({ error: null, loading: false, done: false });
+	const [visible, setVisible] = useState(false);
 	// const [visibleModal, setVisibleModal] = useState(false);
 	// const postOrdersOnSheets = async () => {
 	// 	Fetch<{ orders: sheetOrder }>({
@@ -67,23 +70,72 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId })
 			});
 	};
 
+	const handler = () => setVisible(true);
+
+	const closeHandler = () => {
+		setVisible(false);
+		console.log('closed');
+	};
+
+	const ordersChecked = orders.filter(o => o.checked === true);
+	const ordersNotChecked = orders.filter(o => o.checked === false);
+	const saleTotal = orders.reduce((total, order) => total + order.total, 0);
+
+	const resumePagos = orders => {
+		let debito = 0;
+		let efectivo = 0;
+		let otro = 0;
+		orders.forEach(order => {
+			if (order.checked) {
+				if (order.paymentType === 'debito') {
+					debito += order.total;
+					return;
+				}
+				if (order.paymentType === 'efectivo') {
+					efectivo += order.total;
+					return;
+				}
+				if (order.paymentType === 'transferencia') {
+					debito += order.total;
+					return;
+				}
+				if (order.paymentType === 'otro') {
+					otro += order.total;
+					return;
+				}
+			}
+		});
+
+		return {
+			debito,
+			efectivo,
+			otro
+		};
+	};
+
+	const pagos = resumePagos(orders);
 	return (
 		<Container>
 			<Grid.Container justify="center" direction="column" alignItems="center">
-				<Text h3>Pedidos guardados hasta ahora (sin enviar)</Text>
-				<Text h2>{ordersCount}</Text>
 				{status === CERRADA ? (
-					<div style={{display: "flex"}}>
-						<Button
-							onClick={() => submitDowload(saleId)}
-							color="primary"
-						>
-							<PdfIcon /> Descargar pedidos en PDF
+					<>
+						<Button onClick={handler} color="warning" css={{ marginBottom: 10 }}>
+							Resumen de la compra
 						</Button>
-						<Button onClick={() => submitDowloadExcel(saleId)} color="success" className={fetching.loading ? 'button-total-disabled' : ''} style={{marginLeft: "1rem"}}>
-							<FileSpreadsheet /> Descargar pedidos en Excel
-						</Button>
-					</div>
+						<div style={{ display: 'flex' }}>
+							<Button onClick={() => submitDowload(saleId)} color="primary">
+								<PdfIcon /> Descargar pedidos en PDF
+							</Button>
+							<Button
+								onClick={() => submitDowloadExcel(saleId)}
+								color="success"
+								className={fetching.loading ? 'button-total-disabled' : ''}
+								style={{ marginLeft: '1rem' }}
+							>
+								<FileSpreadsheet /> Descargar pedidos en Excel
+							</Button>
+						</div>
+					</>
 				) : null}
 				{/* <Button
 					disabled={status === 'open'}
@@ -99,6 +151,45 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId })
 				{fetching.done &&
 					(fetching.error ? <Text color="error">{fetching.error}</Text> : <Text>Pedidos descargados con éxito</Text>)}
 			</Grid.Container>
+			<Modal closeButton fullScreen aria-labelledby="modal-title" open={visible} onClose={closeHandler}>
+				<Modal.Header>
+					<Text id="modal-title" size={18}>
+						Resumen de compra
+					</Text>
+				</Modal.Header>
+				<Modal.Body>
+					<Text id="modal-title" size={18}>
+						Total de pedidos: {orders.length}
+					</Text>
+					<Text id="modal-title" size={18}>
+						Pedidos controlados: {ordersChecked.length}
+					</Text>
+					<Text id="modal-title" size={18}>
+						Pedidos faltantes: {ordersNotChecked.length}
+					</Text>
+					<Divider />
+					<Text id="modal-title" size={18}>
+						Total de la compra: ${saleTotal}
+					</Text>
+					<Text id="modal-title" size={18}>
+						Pagos en efectivo: ${pagos.efectivo}
+					</Text>
+					<Text id="modal-title" size={18}>
+						Pagos en debito/transferencia: ${pagos.debito}
+					</Text>
+					<Text id="modal-title" size={18}>
+						Otros pagos: ${pagos.otro}
+					</Text>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button auto flat color="error" onPress={closeHandler}>
+						Close
+					</Button>
+					<Button auto flat color="warning" onPress={closeHandler}>
+						Archivar compra
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</Container>
 	);
 };
