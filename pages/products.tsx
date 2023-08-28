@@ -1,4 +1,4 @@
-import { Grid, Container, Row, Pagination, Loading, Input, Text } from '@nextui-org/react';
+import { Grid, Container, Row, Pagination, Loading, Input, Text, Button } from '@nextui-org/react';
 import React, { useContext, useEffect, useState } from 'react';
 import ProductCard from '../components/cards/ProductCard';
 import { getCategories, getProducts, getProductsBySale, getuserOrderBySale } from '../helpers/content';
@@ -11,7 +11,12 @@ import useDebounce from '../src/hooks/debounceHook';
 import { useAppCtx } from '../src/context';
 import { SalesCtx } from '../src/salescontext';
 import { useRouter } from 'next/router';
+<<<<<<< HEAD
 import { OrderContext } from '../src/context/orderContext/OrderContext';
+=======
+import { ArrowScroll } from '../components/svg/ArrowScroll';
+import BottomMobileBar from '../components/cards/BottomMobileBar';
+>>>>>>> main
 export { getServerSideProps } from '../src/ssp/products';
 
 export default function Products(props) {
@@ -25,11 +30,28 @@ export default function Products(props) {
 	const [totalPages, setTotalPages] = useState(1);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [loading, setLoading] = useState(true);
+	const [visible, setVisible] = useState(false);
 	const route = useRouter();
 	const debouncedSearch = useDebounce(search, 750);
 	const addProductToCart = (product, qty) => {
 		cart.addProduct({ ...product, qty });
 	};
+
+	function handleScroll() {
+		const currentPosition = window.pageYOffset;
+		if (currentPosition > 100) {
+			setVisible(true);
+		} else {
+			setVisible(false);
+		}
+	}
+
+	function handleClickScrollUp() {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	}
 
 	useEffect(() => {
 		if (saleSelected._id.length === 0) {
@@ -64,16 +86,19 @@ export default function Products(props) {
 			setCurrentPage(page);
 			setProducts(res.productos);
 			setTotalPages(res.totalPaginas);
+			handleClickScrollUp();
 		});
 	};
-	// useEffect(() => {
-	// 	if (saleSelected._id.length === 0) {
-	// 		route.push('/admin');
-	// 	}
-	// 	setProducts([]);
-	// 	setCurrentPage(1);
-	// 	fetchData(salesId, 1, category, debouncedSearch);
-	// }, [category, debouncedSearch]);
+
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll);
+		if (saleSelected._id.length === 0) {
+			route.push('/admin');
+		}
+		setProducts([]);
+		setCurrentPage(1);
+		fetchData(salesId, 1, category, debouncedSearch);
+	}, [category, debouncedSearch]);
 
 	return (
 		<Layout>
@@ -84,6 +109,13 @@ export default function Products(props) {
 				cart={cart}
 			/>
 			<Container css={{ backgroundColor: '#fff', maxWidth: '1260px' }}>
+				<Button
+					auto
+					color="error"
+					className={visible ? 'scroll-up-button visible' : 'scroll-up-button'}
+					onClick={handleClickScrollUp}
+					icon={<ArrowScroll color="#F2F3F3" />}
+				/>
 				<Row css={{ backgroundColor: 'transparent', marginTop: '-1.4rem' }} className="search-row">
 					<Input
 						placeholder="Buscá un producto..."
@@ -127,6 +159,7 @@ export default function Products(props) {
 									onChange={page => fetchData(salesId, page, category, debouncedSearch)}
 									color="warning"
 									page={currentPage}
+									onClick={handleClickScrollUp}
 								/>
 							</Grid>
 						</Grid.Container>
@@ -134,6 +167,7 @@ export default function Products(props) {
 				)}
 			</Container>
 			{cart.products?.length > 0 && <ButtonCart cart={cart} />}
+			<BottomMobileBar cart={cart} />
 		</Layout>
 	);
 }
