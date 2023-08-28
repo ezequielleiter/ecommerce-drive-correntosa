@@ -7,12 +7,19 @@ export const getProducts = async (page = 1, category = '', search = '') => {
 	});
 };
 
-export const getProductsBySale = async (id, page = 1, category = '', search = '') => {
+export const getProductsBySale = async ({id, page = 1, category = '', search = '', isProductsIds = false}) => {
+	if (isProductsIds) {
+		return await Fetch<{ id: String, category: String; search: String; page: Number }>({
+			url: `/api/products/product-by-sale`,
+			query: { id, category, search, page, isProductsIds}
+		});
+	}
 	return await Fetch<{ id: String, category: String; search: String; page: Number }>({
 		url: `/api/products/product-by-sale`,
 		query: { id, category, search, page }
 	});
 };
+
 
 export const getuserOrderBySale = async (userId, saleId) => {
 	return await Fetch<{ userId: string , saleId: string }>({
@@ -22,10 +29,10 @@ export const getuserOrderBySale = async (userId, saleId) => {
 };
 
 
-export const getOrderBySale = async (saleId) => {
-	return await Fetch<{ saleId: string }>({
+export const getOrderBySale = async (saleId, userId) => {
+	return await Fetch<{ saleId: string, userId: string }>({
 		url: `/api/cart/order-by-sale`,
-		query: { saleId }
+		query: { saleId, userId }
 	});
 };
 

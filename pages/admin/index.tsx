@@ -6,11 +6,38 @@ import { infoMessages } from '../../helpers/notify';
 import { statusDate } from '../../helpers/date';
 import ComprasList from '../../components/admin/ComprasList';
 import ModalCreateSale from '../../components/admin/ModalCreateSale';
+import { Fetch } from '../../src/hooks/fetchHook';
 
 export { getServerSideProps } from '../../src/ssp/admin';
 
 export default function Admin(props) {
-	useEffect(() => infoMessages(), []);
+	const [productos, setProductos] = useState([]);
+	const [modificadores, setModificadores] = useState([]);
+	useEffect(() => {
+		const allModificadores = Fetch({
+			url: `/api/modificadores`,
+			method: 'GET',
+			onError: e => {
+				console.warn(`error al buscar tags`, e);
+			},
+			onSuccess: res => {
+				setModificadores(res);
+			}
+		});
+
+		const allProductos = Fetch({
+			url: `/api/products`,
+			method: 'GET',
+			onError: e => {
+				console.warn(`error al buscar tags`, e);
+			},
+			onSuccess: res => {
+				setProductos(res.products);
+			}
+		});
+		infoMessages();
+		Promise.all([allModificadores, allProductos]);
+	}, []);
 	const compras = props.allSales.map(compra => {
 		compra.status =
 			statusDate({ openDate: compra.openDate, closeDate: compra.closeDate }) === 'open'
@@ -37,7 +64,7 @@ export default function Admin(props) {
 				) : null}
 				<ComprasList compras={compras} />
 			</Container>
-			<ModalCreateSale open={visible} setCreating={setVisible} />
+			<ModalCreateSale open={visible} setCreating={setVisible} productos={productos} modificadores={modificadores} />
 		</Layout>
 	);
 }

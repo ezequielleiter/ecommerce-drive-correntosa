@@ -49,7 +49,6 @@ export default function Cart(props) {
 				<>
 					<Header user={props.user} title={isEditingOrder ? 'Su pedido se actualizo existosamente' : 'Pedido exitoso'} cart={cart} />
 					<Container className="cart-container">
-
 					</Container>
 				</>
 			)}

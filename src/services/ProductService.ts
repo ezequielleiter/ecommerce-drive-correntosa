@@ -11,10 +11,47 @@ class ProductService extends BaseService {
 		super();
 	}
 
-	async saveProduct(product: ProductModel) {
+
+	async createProduct(product: ProductModel) {
 		try {
 			await Product.createProduct(product);
 			return { error: false };
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async saveProduct(product) {
+		try {
+			await Product.createProduct(product);
+			return { error: false };
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async updateProduct(productoId, product) {
+		try {
+			await Product.updateProduct(productoId, product);
+			return { error: false };
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async bulkUpdateProduct(products) {
+		try {
+			const result = await Product.bulkUpdateProduct(products);
+			return result;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async getProductsByIds(productsIds) {
+		try {
+			const result = await Product.getProductsByIds(productsIds);			
+			return result;
 		} catch (e) {
 			throw new ApiException(e);
 		}
@@ -34,6 +71,15 @@ class ProductService extends BaseService {
 	async getProducts(category, page: number = 1) {
 		try {
 			const products = await Product.getProducts(category, page);
+			return products;
+		} catch (e) {
+			throw new ApiException(e);
+		}
+	}
+
+	async getAllProducts() {
+		try {
+			const products = await Product.getAllProducts();
 			return products;
 		} catch (e) {
 			throw new ApiException(e);

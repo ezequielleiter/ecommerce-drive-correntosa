@@ -11,8 +11,12 @@ import useDebounce from '../src/hooks/debounceHook';
 import { useAppCtx } from '../src/context';
 import { SalesCtx } from '../src/salescontext';
 import { useRouter } from 'next/router';
+<<<<<<< HEAD
+import { OrderContext } from '../src/context/orderContext/OrderContext';
+=======
 import { ArrowScroll } from '../components/svg/ArrowScroll';
 import BottomMobileBar from '../components/cards/BottomMobileBar';
+>>>>>>> main
 export { getServerSideProps } from '../src/ssp/products';
 
 export default function Products(props) {
@@ -54,24 +58,31 @@ export default function Products(props) {
 			route.push('/admin');
 		}
 		infoMessages();
-		getuserOrderBySale(props.user.id, saleSelected._id).then(res => {
-			cart.setCarBySale(res);
+		const userOrderBySale = getuserOrderBySale(props.user.id, saleSelected._id).then(res => {
+			const parseRes = JSON.parse(res)
+			cart.setCarBySale(parseRes);
 		});
-		getProductsBySale(salesId).then(res => {
+		const productsBySale = getProductsBySale({
+			id: salesId,
+			isProductsIds: true
+		}).then(res => {
+			const productos = JSON.parse(res)
 			setLoading(true);
-			setProducts(res.productos);
+			setProducts(productos);
 			setTotalPages(res.totalPaginas);
 			setLoading(false);
 		});
-		getCategories().then(res => {
+		const category = getCategories().then(res => {
 			let categoriesParsed = [];
 			res.map(category => categoriesParsed.push({ key: category.slug, name: category.name }));
 			setCategories([{ key: '', name: 'Todas las categorías' }, ...categoriesParsed]);
 		});
+
+		Promise.all([userOrderBySale, productsBySale,  category])
 	}, []);
 
 	const fetchData = (salesId, page, category, debouncedSearch) => {
-		getProductsBySale(salesId, page, category.key, debouncedSearch).then(res => {
+		getProductsBySale({id: salesId, page, category: category.key, search: debouncedSearch}).then(res => {
 			setCurrentPage(page);
 			setProducts(res.productos);
 			setTotalPages(res.totalPaginas);
@@ -132,7 +143,7 @@ export default function Products(props) {
 											<ProductCard
 												addProduct={(product, qty) => addProductToCart(product, qty)}
 												item={item}
-												key={item.code}
+												key={item._id}
 											/>
 										</Grid>
 									) : null

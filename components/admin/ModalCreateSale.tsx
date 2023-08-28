@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Modal, Text } from '@nextui-org/react';
+import { Avatar, Button, Grid, Input, Modal, Table, Text } from '@nextui-org/react';
 import { FC, useState } from 'react';
 import { createSaleType, errorsFormType } from '../../src/global/types';
 import { Fetch } from '../../src/hooks/fetchHook';
@@ -6,12 +6,15 @@ import { useFormValidation } from '../../src/hooks/formHook';
 import { formatDate, getMinCloseDate } from '../../helpers/date';
 import { useSalesCtx } from '../../src/salescontext';
 import { useRouter } from 'next/router';
+import calculateFinalPrice from '../../src/helpers/prices/calculateFinalPrice';
 
 type props = {
 	setCreating(status: boolean): void;
 	// setCurrentStatus(status: statusCart): void;
 	// initialStatus: any;
 	open: boolean;
+	productos: any[];
+	modificadores: any[];
 };
 
 const initialFormFields: createSaleType = {
@@ -22,16 +25,18 @@ const initialFormFields: createSaleType = {
 	openDeliveryHour: '',
 	closeDeliveryHour: '',
 	locationName: '',
-	locationUrl: ''
+	locationUrl: '',
+	productsIds: ''
 };
 const initialFormErrors: errorsFormType = {};
 
-const ModalCreateSale: FC<props> = ({ setCreating, open }) => {
+const ModalCreateSale: FC<props> = ({ setCreating, open, productos, modificadores }) => {
 	const sale = useSalesCtx();
 	const router = useRouter();
 	const form = useFormValidation<createSaleType>(initialFormFields);
 	const [errors, setErrors] = useState(initialFormErrors);
 	const [fetching, setFetching] = useState({ error: null, loading: false, done: false });
+	const [productsIds, setProductsIds] = useState([]);
 	const today = formatDate(new Date());
 	const handleChangeField = (e, property: keyof createSaleType) => {
 		const value = e.target.value;
@@ -52,7 +57,8 @@ const ModalCreateSale: FC<props> = ({ setCreating, open }) => {
 				openDeliveryHour: form.fields.openDeliveryHour,
 				closeDeliveryHour: form.fields.closeDeliveryHour,
 				locationName: form.fields.locationName,
-				locationUrl: form.fields.locationUrl
+				locationUrl: form.fields.locationUrl,
+				productsIds
 			},
 			onSuccess: response => {
 				// sale.selectSale(response);
@@ -61,7 +67,7 @@ const ModalCreateSale: FC<props> = ({ setCreating, open }) => {
 			onError: e => setFetching({ error: 'Ocurrió un error enviando las fechas', loading: false, done: true })
 		});
 		setCreating(false);
-		router.reload()
+		router.reload();
 	};
 
 	const validate = () => {
@@ -73,7 +79,8 @@ const ModalCreateSale: FC<props> = ({ setCreating, open }) => {
 			openDeliveryHour: 'Debe ingresar una hora de entrega',
 			closeDeliveryHour: 'Debe ingresar una hora de cierre',
 			locationName: 'Debe ingresar el nombre del lugar de entrega',
-			locationUrl: 'Debe ingresar el link del lugar de entrega'
+			locationUrl: 'Debe ingresar el link del lugar de entrega',
+			productsIds: 'Debe ingresar almenos un producto',
 		});
 		const validateIntervalDates = new Date(form.closeDate) <= new Date(form.openDate);
 
@@ -87,9 +94,30 @@ const ModalCreateSale: FC<props> = ({ setCreating, open }) => {
 		setCreating(false);
 	};
 
+	const findModificadores = modificadoresIds => {
+		const completeModificadores = [];
+		modificadoresIds.forEach(modificadorId => {
+			const findCompleteModificador = modificadores.find(m => m._id.toString() === modificadorId);
+			if (findCompleteModificador) {
+				completeModificadores.push(findCompleteModificador);
+			}
+		});
+		return completeModificadores;
+	};
+
+	const handleSelectionChange = e => {
+		if (e === 'all') {
+			const allProductsIdToAdd = productos.map(p => p._id.toString());
+			setProductsIds(allProductsIdToAdd);
+		} else {
+			const productsIdToAdd = Array.from(e);
+			setProductsIds(productsIdToAdd);
+		}
+	};
+
 	return (
 		<>
-			<Modal closeButton blur aria-labelledby="modal-title" open={open} onClose={closeHandler} width="50%">
+			<Modal fullScreen closeButton blur aria-labelledby="modal-title" open={open} onClose={closeHandler} width="50%">
 				<Modal.Header>
 					<Text id="modal-title" size={18} weight="bold">
 						Crear compra
@@ -191,6 +219,50 @@ const ModalCreateSale: FC<props> = ({ setCreating, open }) => {
 							<Text color="error">{errors.locationUrl ?? ''}</Text>
 						</Grid>
 					</Grid.Container>
+					<Modal.Header>
+						<Text weight="bold">Productos</Text>
+					</Modal.Header>
+					<div>
+					<Table
+						aria-label="Example table with static content"
+						css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
+						compact
+						selectionMode="multiple"
+						lined
+						headerLined
+						shadow={false}
+						sticked
+						onSelectionChange={handleSelectionChange}
+					>
+						<Table.Header>
+							<Table.Column>Nombre</Table.Column>
+							<Table.Column>Precio neto</Table.Column>
+							<Table.Column>Precio venta</Table.Column>
+						</Table.Header>
+						<Table.Body>
+							{productos.map(producto =>
+								!producto.stock ? null : (
+									<Table.Row key={producto._id}>
+										<Table.Cell>
+											<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+												<Avatar squared src={`https://drive.google.com/uc?id=${producto.picture}&export=download`} />
+												<Text css={{ paddingLeft: '1rem' }}>{producto.name}</Text>
+											</div>
+										</Table.Cell>
+										<Table.Cell>$ {producto.price}</Table.Cell>
+										<Table.Cell>
+											${' '}
+											{calculateFinalPrice({
+												price: producto.price,
+												modificadoresSeleted: findModificadores(producto.modificadoresIds)
+											})}
+										</Table.Cell>
+									</Table.Row>
+								)
+							)}
+						</Table.Body>
+					</Table>
+					</div>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button

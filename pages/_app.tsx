@@ -18,8 +18,8 @@ const MyApp = ({ Component, pageProps }) => {
 		<NextUIProvider>
 			<AppSalesProvider currentsales={initialState}>
 				<AppCtxProvider cart={pageProps.cart}>
-					<Component {...pageProps} />
-					<ToastContainer />
+						<Component {...pageProps} />
+						<ToastContainer />
 				</AppCtxProvider>
 			</AppSalesProvider>
 		</NextUIProvider>

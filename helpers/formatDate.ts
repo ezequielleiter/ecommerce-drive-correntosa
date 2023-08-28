@@ -35,9 +35,7 @@ export function getDateFormater(dateString: string) {
 	moment.locale('es');
 	const date = new Date(dateString);
 	const day = date.getUTCDate();
-	const weekday = moment(date).format('dddd');
-	console.log(weekday[0].toUpperCase() + weekday.substring(1));
-	
+	const weekday = moment(date).format('dddd');	
 	const weekdayUppercase = weekday[0].toUpperCase() + weekday.substring(1)
 	const houre = moment(date).format("LT")
 	const monthName = moment(date).format("MMMM")

@@ -8,7 +8,7 @@ type props = {
 	status: statusCart;
 	setEditing(editing: boolean): void;
 	saleSelect: any;
-	isSuperAdmin?: boolean
+	isSuperAdmin?: boolean;
 };
 
 const CurrentStatus: FC<props> = ({ status, setEditing, saleSelect, isSuperAdmin }) => {
@@ -21,19 +21,32 @@ const CurrentStatus: FC<props> = ({ status, setEditing, saleSelect, isSuperAdmin
 					{dateStatus === 'open' ? 'Abierta' : dateStatus === 'toOpen' ? 'Abre pronto' : 'Cerrada'}
 				</Text>
 				<Grid>
-					<Text>
-						Abre: <strong>{getDayFromDate(saleSelect.openDate)}</strong> a las{' '}
-						<strong>{getTimeFromDate(saleSelect.openDate)}</strong>
-					</Text>
+					{dateStatus === 'closed' ? null : (
+						<Text>
+							Abre: <strong>{getDayFromDate(saleSelect.openDate)}</strong> a las{' '}
+							<strong>{getTimeFromDate(saleSelect.openDate)}</strong>
+						</Text>
+					)}
 				</Grid>
 				<Grid>
-					<Text>
-						Cierra: <strong>{getDayFromDate(saleSelect.closeDate)}</strong> a las{' '}
-						<strong>{getTimeFromDate(saleSelect.closeDate)}</strong>
-					</Text>
+					{dateStatus === 'closed' ? (
+						<Text>
+							Cerró el: <strong>{getDayFromDate(saleSelect.closeDate)}</strong> a las{' '}
+							<strong>{getTimeFromDate(saleSelect.closeDate)}</strong>
+						</Text>
+					) : (
+						<Text>
+							Cierra: <strong>{getDayFromDate(saleSelect.closeDate)}</strong> a las{' '}
+							<strong>{getTimeFromDate(saleSelect.closeDate)}</strong>
+						</Text>
+					)}
 				</Grid>
 				{dateStatus === 'closed' ? null : (
-					<Button onClick={() => setEditing(true)} className={!isSuperAdmin? 'button-total-disabled' : 'button-total'} disabled={!isSuperAdmin}>
+					<Button
+						onClick={() => setEditing(true)}
+						className={!isSuperAdmin ? 'button-total-disabled' : 'button-total'}
+						disabled={!isSuperAdmin}
+					>
 						Editar compra
 					</Button>
 				)}
