@@ -7,8 +7,13 @@ type props = {
 	setOrdersCount(count: number): void;
 	status: string;
 	saleId: string;
-	orders: [];
+	orders: any[];
 };
+
+type Order = {
+	checked: boolean,
+	total: number
+}
 
 const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId, orders }) => {
 	const CERRADA = 'Cerrada';
@@ -77,9 +82,9 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId, o
 		console.log('closed');
 	};
 
-	const ordersChecked = orders.filter(o => o.checked === true);
-	const ordersNotChecked = orders.filter(o => o.checked === false);
-	const saleTotal = orders.reduce((total, order) => total + order.total, 0);
+	const ordersChecked = orders.filter((o: Order) => o.checked === true);
+	const ordersNotChecked = orders.filter((o: Order) => o.checked === false);
+	const saleTotal = orders.reduce((total, order: Order) => total + order.total, 0);
 
 	const resumePagos = orders => {
 		let debito = 0;
