@@ -15,7 +15,7 @@ class BaseService {
 			try {
 				if (this.isDbConnected) return;
 				const db = await connect(
-					`mongodb+srv://${config.mongo.MONGO_USERNAME}:${config.mongo.MONGO_PASSWORD}@${config.mongo.MONGO_HOST}/${config.mongo.MONGO_DATABASE}?retryWrites=true&w=majority`,
+					`mongodb+srv://${config.mongo.MONGO_USERNAME}:${config.mongo.MONGO_PASSWORD}@${config.mongo.MONGO_HOST}/?retryWrites=true&w=majority`,
 					{
 						useNewUrlParser: true,
 						useUnifiedTopology: true,
