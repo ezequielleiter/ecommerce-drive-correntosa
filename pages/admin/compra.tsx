@@ -51,7 +51,7 @@ export default function Admin(props) {
 				setProductos(res.products);
 			}
 		});
-		getOrderBySale(saleSelected._id).then(ordersBySale => {
+		getOrderBySale(saleSelected._id, false).then(ordersBySale => {
 			setorderBySale(ordersBySale);
 			setOrdersCount(ordersBySale.length);
 		});

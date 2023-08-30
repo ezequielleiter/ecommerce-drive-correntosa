@@ -1,7 +1,7 @@
 import { Grid, Container, Row, Pagination, Loading, Input, Text, Button } from '@nextui-org/react';
 import React, { useContext, useEffect, useState } from 'react';
 import ProductCard from '../components/cards/ProductCard';
-import { getCategories, getProducts, getProductsBySale, getuserOrderBySale } from '../helpers/content';
+import { getCategories, getProductsBySale, getuserOrderBySale } from '../helpers/content';
 import Header from '../components/navigation/Header';
 import CategorySelector from '../components/CategorySelector';
 import { infoMessages } from '../helpers/notify';
@@ -11,12 +11,8 @@ import useDebounce from '../src/hooks/debounceHook';
 import { useAppCtx } from '../src/context';
 import { SalesCtx } from '../src/salescontext';
 import { useRouter } from 'next/router';
-<<<<<<< HEAD
-import { OrderContext } from '../src/context/orderContext/OrderContext';
-=======
 import { ArrowScroll } from '../components/svg/ArrowScroll';
 import BottomMobileBar from '../components/cards/BottomMobileBar';
->>>>>>> main
 export { getServerSideProps } from '../src/ssp/products';
 
 export default function Products(props) {
