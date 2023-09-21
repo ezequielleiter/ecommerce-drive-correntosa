@@ -1,6 +1,6 @@
 import { Avatar, Button, Container, Grid, Table, Text } from '@nextui-org/react';
 import Header from '../../components/navigation/Header';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 import { useEffect, useState } from 'react';
 import { useFormValidation } from '../../src/hooks/formHook';
 import { createProductoType } from '../../src/global/types';

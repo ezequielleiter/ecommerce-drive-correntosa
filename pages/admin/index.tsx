@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button, Container, Grid, Text } from '@nextui-org/react';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 import Header from '../../components/navigation/Header';
 import { infoMessages } from '../../helpers/notify';
 import { statusDate } from '../../helpers/date';

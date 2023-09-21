@@ -45,7 +45,7 @@ const oauthCallback = async (req: NextApiRequest, res: NextApiResponse) => {
 			if (MatchEmail[config.GOOGLE_SHEET_ROWS.USERS.IS_ADMIN_COLUMN] === '1') {
 				return res.redirect('/admin#logged');
 			}
-			res.redirect('/#logged');
+			res.redirect('/compras-activas');
 		}
 	} catch (e) {
 		res.json(e);

@@ -131,3 +131,29 @@ p {
     flex-direction: column;
     justify-content: space-between;
 }
+
+.page-container {
+  height: 50vh;
+  padding: 15px !important;
+  background-color: #db8704;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.hero {
+  height: 90vh;
+  padding: 15px !important;
+  background-image: url('/img/bgwave.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Container, Grid } from '@nextui-org/react';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 import Header from '../../components/navigation/Header';
 import CartDatesForm from '../../components/admin/CartDatesForm';
 import OrdersCount from '../../components/admin/OrdersCount';

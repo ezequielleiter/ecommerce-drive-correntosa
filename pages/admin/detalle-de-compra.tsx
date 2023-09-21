@@ -1,5 +1,5 @@
 import { Badge, Container, Grid, Loading, Text } from '@nextui-org/react';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 import Header from '../../components/navigation/Header';
 import UserOrdersList from '../../components/admin/UserOrderList';
 import { useContext, useEffect, useState } from 'react';

@@ -1,11 +1,11 @@
 import Head from 'next/head';
-import Footer from '../components/navigation/Footer';
+import Footer from '../navigation/Footer';
 
 type Props = {
 	children: React.ReactNode;
 };
 
-const Layout: React.FC<Props> = ({ children }) => {
+const PageLayout: React.FC<Props> = ({ children }) => {
 	return (
 		<>
 			<Head>
@@ -20,4 +20,4 @@ const Layout: React.FC<Props> = ({ children }) => {
 	);
 };
 
-export default Layout;
+export default PageLayout;
