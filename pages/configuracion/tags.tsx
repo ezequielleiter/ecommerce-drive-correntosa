@@ -1,11 +1,10 @@
-import { Button, Container, Input, Modal, Table, Text } from '@nextui-org/react';
+import { Badge, Button, Container, Table} from '@nextui-org/react';
 import Header from '../../components/navigation/Header';
 import Layout from '../layout';
 import { useEffect, useState } from 'react';
 import { Fetch } from '../../src/hooks/fetchHook';
 import { useFormValidation } from '../../src/hooks/formHook';
 import { createTagType, errorTagType } from '../../src/global/types';
-import { EyeIcon } from '../../components/svg/EyeIcon';
 import { IconButton } from '../../components/IconButton';
 import { EditIcon } from '../../components/svg/EditIcon';
 import { ModalTags } from '../../components/configuracion/ModalTags';
@@ -27,14 +26,15 @@ export default function Tags(props) {
 	const [errors, setErrors] = useState(initialFormErrors);
 	const handler = () => setVisible(true);
 	const form = useFormValidation<createTagType>(initialFormFields);
-	
+
 	const handleChangeField = (e, property) => {
 		const value = e.target.value;
 		form.setValue(property, value);
 	};
 	const closeHandler = () => {
-		setTagIdToEdit(false)
+		setTagIdToEdit(false);
 		setVisible(false);
+		form.setValue(null, initialFormFields);
 	};
 
 	useEffect(() => {
@@ -49,13 +49,13 @@ export default function Tags(props) {
 				setTags(res);
 			}
 		});
-	}, []);
+	}, [tags]);
 
 	const onSave = () => {
-		const query = tagIdToEdit ? {tagIdToEdit} : ''
+		const query = tagIdToEdit ? { tagIdToEdit } : '';
 		Fetch({
 			url: `/api/tag`,
-			method: tagIdToEdit ? 'PUT': 'POST',
+			method: tagIdToEdit ? 'PUT' : 'POST',
 			data: { ...form.fields },
 			query,
 			onError: e => {
@@ -74,7 +74,7 @@ export default function Tags(props) {
 			color: 'Debe ingresar un color'
 		});
 		console.log(localErrors);
-		
+
 		if (localErrors) {
 			setErrors(localErrors);
 		}
@@ -85,7 +85,7 @@ export default function Tags(props) {
 		const tag = tags.find(t => t._id.toString() === tagId);
 		if (tag) {
 			form.setValue(null, tag);
-			setTagIdToEdit(tagId)
+			setTagIdToEdit(tagId);
 			setVisible(true);
 			return;
 		}
@@ -111,7 +111,11 @@ export default function Tags(props) {
 						<Table.Body>
 							{tags.map(tag => (
 								<Table.Row key={tag._id}>
-									<Table.Cell>{tag.name}</Table.Cell>
+									<Table.Cell>
+										<Badge size="md" style={{ backgroundColor: `${tag.color}` }}>
+											{tag.name}
+										</Badge>
+									</Table.Cell>
 									<Table.Cell>
 										<IconButton onClick={() => onEdit(tag._id)}>
 											<EditIcon />
