@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Fetch } from '../../src/hooks/fetchHook';
 import { useFormValidation } from '../../src/hooks/formHook';
 import { createAgregadoType, errorAgregadoType } from '../../src/global/types';
-import { EyeIcon } from '../../components/svg/EyeIcon';
 import { IconButton } from '../../components/IconButton';
 import { EditIcon } from '../../components/svg/EditIcon';
 export { getServerSideProps } from '../../src/ssp/cart';
@@ -14,7 +13,8 @@ const initialFormFields: createAgregadoType = {
 	name: '',
 	value: '',
 	type: '',
-    discount: false
+	discount: false,
+	margen: false
 };
 
 const initialFormErrors: errorAgregadoType = {};
@@ -22,15 +22,14 @@ const initialFormErrors: errorAgregadoType = {};
 export default function ValoresAgregados(props) {
 	const [visible, setVisible] = useState(false);
 	const [loading, setLoading] = useState(true);
-    const [modificadores, setModificadores] = useState([]);
+	const [modificadores, setModificadores] = useState([]);
 	const [errors, setErrors] = useState(initialFormErrors);
-    const [selected, setSelected] = useState('');
-	const [modificadorIdToEdit, setModificadorIdToEdit] = useState(false)
-	const selectedType= (e) => {
-        setSelected(e.currentKey)
-        handleChangeField(e.currentKey, 'type')
-    }
-	const handler = () => setVisible(true);
+	const [selected, setSelected] = useState('');
+	const [modificadorIdToEdit, setModificadorIdToEdit] = useState(false);
+	const selectedType = e => {
+		setSelected(e.currentKey);
+		handleChangeField(e.currentKey, 'type');
+	};
 	const form = useFormValidation<createAgregadoType>(initialFormFields);
 
 	const handleChangeField = (e, property) => {
@@ -64,16 +63,19 @@ export default function ValoresAgregados(props) {
 				setModificadores(res);
 			}
 		});
-	}, []);
+	}, [modificadores]);
 
 	const onSave = () => {
-        if (!form.discount) {
-            form.setValue('discount', false);
-        }
-		const query = modificadorIdToEdit ? {modificadorIdToEdit} : ''
+		if (!form.discount) {
+			form.setValue('discount', false);
+		}
+		if (!form.margen) {
+			form.setValue('margen', false);
+		}
+		const query = modificadorIdToEdit ? { modificadorIdToEdit } : '';
 		Fetch({
 			url: `/api/modificadores`,
-			method: modificadorIdToEdit ? 'PUT': 'POST',
+			method: modificadorIdToEdit ? 'PUT' : 'POST',
 			data: { ...form.fields },
 			query,
 			onError: e => {
@@ -90,20 +92,21 @@ export default function ValoresAgregados(props) {
 			name: 'Debe ingresar un nombre',
 			value: 'Debe ingresar un valor',
 			type: 'Debe ingresar un tipo de valor agregado',
-            discount: false
+			discount: false,
+			margen: false
 		});
 		if (localErrors) {
 			setErrors(localErrors);
 		}
 		return !localErrors;
 	};
-    
+
 	const onEdit = modificadorId => {
 		const modificador = modificadores.find(m => m._id.toString() === modificadorId);
 		if (modificador) {
-			setModificadorIdToEdit(modificadorId)
+			setModificadorIdToEdit(modificadorId);
 			form.setValue(null, modificador);
-			setSelected(form.fields.type)
+			setSelected(form.fields.type);
 			setVisible(true);
 			return;
 		}
@@ -124,14 +127,20 @@ export default function ValoresAgregados(props) {
 					>
 						<Table.Header>
 							<Table.Column>Nombre</Table.Column>
+							<Table.Column>Valor</Table.Column>
+							<Table.Column>Es descuento</Table.Column>
+							<Table.Column>Es margen</Table.Column>
 							<Table.Column>Acciones</Table.Column>
 						</Table.Header>
 						<Table.Body>
 							{modificadores.map(agregado => (
 								<Table.Row key={agregado._id}>
 									<Table.Cell>{agregado.name}</Table.Cell>
+									<Table.Cell>{agregado.value}{agregado.type}</Table.Cell>
+									<Table.Cell>{agregado.discount ? "Sí" : "No"}</Table.Cell>
+									<Table.Cell>{agregado.margen ? "Sí" : "No"}</Table.Cell>
 									<Table.Cell>
-									<IconButton onClick={() => onEdit(agregado._id)}>
+										<IconButton onClick={() => onEdit(agregado._id)}>
 											<EditIcon />
 										</IconButton>
 									</Table.Cell>
@@ -153,28 +162,39 @@ export default function ValoresAgregados(props) {
 					<Input placeholder="Valor" type="number" value={form.value} onChange={e => handleChangeField(e, 'value')} />
 					<Text color="error">{errors.value ?? ''}</Text>
 					<Dropdown>
-						<Dropdown.Button flat>
-							{selected === '' ? 'Tipo de valor agregado' : selected}
-						</Dropdown.Button>
+						<Dropdown.Button flat>{selected === '' ? 'Tipo de valor agregado' : selected}</Dropdown.Button>
 						<Dropdown.Menu
 							aria-label="Single selection actions"
 							color="secondary"
 							disallowEmptySelection
 							selectionMode="single"
 							selectedKeys={selected}
-							onSelectionChange={(e) => selectedType(e)}
+							onSelectionChange={e => selectedType(e)}
 						>
 							{tipoValorAgregado.map(type => (
 								<Dropdown.Item key={type.type}>{type.name}</Dropdown.Item>
 							))}
 						</Dropdown.Menu>
 					</Dropdown>
-                    <Text color="error">{errors.type ?? ''}</Text>
+					<Text color="error">{errors.type ?? ''}</Text>
 					<Text style={{ marginBottom: 0 }}>Es un descuento:</Text>
-					<Switch checked={form.discount} iconOn={'Sí'} iconOff={'No'} onChange={(e) => {
-                        handleChangeField(e.target.checked, 'discount')  
-                    }}
-             />
+					<Switch
+						checked={form.discount}
+						iconOn={'Sí'}
+						iconOff={'No'}
+						onChange={e => {
+							handleChangeField(e.target.checked, 'discount');
+						}}
+					/>
+					<Text style={{ marginBottom: 0 }}>Es un margen:</Text>
+					<Switch
+						checked={form.margen}
+						iconOn={'Sí'}
+						iconOff={'No'}
+						onChange={e => {
+							handleChangeField(e.target.checked, 'margen');
+						}}
+					/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button auto flat color="error" onPress={closeHandler}>
