@@ -1,6 +1,6 @@
 import { Button, Container, Dropdown, Input, Modal, Switch, Table, Text } from '@nextui-org/react';
 import Header from '../../components/navigation/Header';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 import { useEffect, useMemo, useState } from 'react';
 import { Fetch } from '../../src/hooks/fetchHook';
 import { useFormValidation } from '../../src/hooks/formHook';

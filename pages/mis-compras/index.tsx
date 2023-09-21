@@ -8,7 +8,7 @@ import { CheckIcon } from '../../components/svg/CheckIcon';
 import { EyeIcon } from '../../components/svg/EyeIcon';
 import { getOrderByUser } from '../../helpers/content';
 import { infoMessages } from '../../helpers/notify';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 export { getServerSideProps } from '../../src/ssp/admin';
 
 const counterContext = {

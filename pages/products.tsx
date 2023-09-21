@@ -5,7 +5,7 @@ import { getCategories, getProductsBySale, getuserOrderBySale } from '../helpers
 import Header from '../components/navigation/Header';
 import CategorySelector from '../components/CategorySelector';
 import { infoMessages } from '../helpers/notify';
-import Layout from './layout';
+import Layout from '../components/layouts/layout';
 import ButtonCart from '../components/ButtonCart';
 import useDebounce from '../src/hooks/debounceHook';
 import { useAppCtx } from '../src/context';

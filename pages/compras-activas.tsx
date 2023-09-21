@@ -7,7 +7,7 @@ import { statuSale, statusDate } from '../helpers/date';
 import { getDateFormater, getDayFromDate } from '../helpers/formatDate';
 import { infoMessages } from '../helpers/notify';
 import { useSalesCtx } from '../src/salescontext';
-import Layout from './layout';
+import Layout from '../components/layouts/layout';
 import moment from 'moment';
 export { getServerSideProps } from '../src/ssp/admin';
 

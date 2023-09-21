@@ -5,7 +5,7 @@ const logout = async (req: NextApiRequest, res: NextApiResponse) => {
 	try {
 		req.session.destroy();
 
-		res.redirect('/#logout');
+		res.redirect('/login');
 	} catch (e) {
 		res.json(e);
 	}

@@ -1,6 +1,6 @@
 import { Card, Grid, Row, Text } from '@nextui-org/react';
 import Header from '../../components/navigation/Header';
-import Layout from '../layout';
+import Layout from '../../components/layouts/layout';
 import { useRouter } from 'next/router';
 export { getServerSideProps } from '../../src/ssp/cart';
 

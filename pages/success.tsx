@@ -1,4 +1,4 @@
-import Layout from './layout';
+import Layout from '../components/layouts/layout';
 import Header from '../components/navigation/Header';
 import { Button, Container, Grid } from '@nextui-org/react';
 import ProductDetailCard from '../components/cards/ProductDetailCard';
