@@ -87,6 +87,8 @@ export default function Productos(props) {
 
 	const closeHandler = () => {
 		setVisible(false);
+		setProductoIdToEdit(false);
+		form.setValue(null, initialFormFields);
 	};
 
 	const closeHandlerCargaMasiva = () => {

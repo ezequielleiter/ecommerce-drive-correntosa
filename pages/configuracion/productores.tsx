@@ -46,8 +46,9 @@ export default function Productos(props) {
 	};
 
 	const closeHandler = () => {
-		form.fields = { ...initialFormErrors };
+		form.setValue(null, initialFormFields);
 		setProductorSelected(null);
+		setSelectedTags([])
 		setVisible(false);
 	};
 
@@ -75,12 +76,12 @@ export default function Productos(props) {
 			}
 		});
 		Promise.all([productor, tags]);
-	}, []);
+	}, [productores]);
 
 	const onSave = productorId => {
 		const tagsToSave = Array.from(selectedTags);
 		if (tagsToSave.length > 0) {
-			form.fields.tags = tagsToSave
+			form.fields.tags = tagsToSave;
 		}
 		const query = productorId ? { productorId } : null;
 		Fetch({
@@ -127,7 +128,7 @@ export default function Productos(props) {
 		}
 		return console.error('Hubo un problema al editar un productor');
 	};
-	
+
 	return (
 		<Layout {...props}>
 			<Header user={props.user} title={'Productores'} />

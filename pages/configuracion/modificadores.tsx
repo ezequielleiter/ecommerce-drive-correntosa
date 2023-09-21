@@ -38,6 +38,9 @@ export default function ValoresAgregados(props) {
 	};
 	const closeHandler = () => {
 		setVisible(false);
+		setModificadorIdToEdit(false);
+		setSelected('');
+		form.setValue(null, initialFormFields);
 	};
 
 	const tipoValorAgregado = [
@@ -106,7 +109,7 @@ export default function ValoresAgregados(props) {
 		if (modificador) {
 			setModificadorIdToEdit(modificadorId);
 			form.setValue(null, modificador);
-			setSelected(form.fields.type);
+			setSelected(modificador.type);
 			setVisible(true);
 			return;
 		}
@@ -136,9 +139,12 @@ export default function ValoresAgregados(props) {
 							{modificadores.map(agregado => (
 								<Table.Row key={agregado._id}>
 									<Table.Cell>{agregado.name}</Table.Cell>
-									<Table.Cell>{agregado.value}{agregado.type}</Table.Cell>
-									<Table.Cell>{agregado.discount ? "Sí" : "No"}</Table.Cell>
-									<Table.Cell>{agregado.margen ? "Sí" : "No"}</Table.Cell>
+									<Table.Cell>
+										{agregado.value}
+										{agregado.type}
+									</Table.Cell>
+									<Table.Cell>{agregado.discount ? 'Sí' : 'No'}</Table.Cell>
+									<Table.Cell>{agregado.margen ? 'Sí' : 'No'}</Table.Cell>
 									<Table.Cell>
 										<IconButton onClick={() => onEdit(agregado._id)}>
 											<EditIcon />
