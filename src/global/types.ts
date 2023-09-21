@@ -87,6 +87,7 @@ export type AgregadoModel = {
 	type: string;
 	value: string;
 	discount: boolean;
+	margen: boolean
 };
 
 export type statusCart = {
@@ -182,6 +183,7 @@ export type createAgregadoType = {
 	value?: string;
 	type?: string;
 	discount?: boolean;
+	margen?: boolean
 };
 
 export type errorAgregadoType = {
@@ -189,6 +191,7 @@ export type errorAgregadoType = {
 	value?: string;
 	type?: string;
 	discount?: boolean;
+	margen?: boolean
 };
 
 export type errorsFormType = {

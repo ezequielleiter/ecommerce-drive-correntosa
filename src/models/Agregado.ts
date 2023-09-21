@@ -8,7 +8,8 @@ const Agregado = new Schema<BaseAgregadoDocument>({
 	name: { type: 'string' },
 	value: { type: 'string' },
     type: {type: 'string'},
-    discount: { type: 'boolean'}
+    discount: { type: 'boolean'},
+	margen: { type: 'boolean'}
 });
 
 Agregado.statics.createAgregado = async function (agregado: AgregadoModel) {

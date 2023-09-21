@@ -132,10 +132,10 @@ export default function ModalProductor({
 			setSelectedOption('unidades');
 			OnSetSelectedUnit(form.fields.measurement);
 		}
-		onSelectProductor(form.fields.seller)
-		onSelectTag(form.fields.tags)
-		onSelectModificador(form.fields.modificadoresIds)
-		onSelectedDisponible(form.fields.stock)
+		onSelectProductor(form.fields.seller);
+		onSelectTag(form.fields.tags);
+		onSelectModificador(form.fields.modificadoresIds);
+		onSelectedDisponible(form.fields.stock);
 	};
 
 	return (

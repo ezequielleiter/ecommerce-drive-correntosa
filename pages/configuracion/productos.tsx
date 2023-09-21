@@ -83,7 +83,7 @@ export default function Productos(props) {
 		});
 
 		Promise.all([allProductores, allTags, allModificadores, allProductos]).then(() => setLoading(false));
-	}, []);
+	}, [productos]);
 
 	const closeHandler = () => {
 		setVisible(false);
