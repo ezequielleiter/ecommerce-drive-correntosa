@@ -19,10 +19,10 @@ export default function Menu() {
 				<Avatar bordered as="button" size="md" src="/img/logo-sin-fondo.png" />
 			</Navbar.Brand>
 			<Navbar.Content enableCursorHighlight activeColor="warning" hideIn="xs" variant="highlight">
-				<Navbar.Link href="#">Nosotres</Navbar.Link>
+				<Navbar.Link href="#nosotros">Nosotres</Navbar.Link>
 				<Navbar.Link href="#">Productos</Navbar.Link>
 				<Navbar.Link href="#">Productores</Navbar.Link>
-				<Navbar.Link href="#">Noticias</Navbar.Link>
+				<Navbar.Link href="#noticias">Noticias</Navbar.Link>
 				<Navbar.Link href="#">Contacto</Navbar.Link>
 			</Navbar.Content>
 			<Navbar.Content

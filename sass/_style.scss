@@ -19,6 +19,10 @@ p {
   text-align: center;
 }
 
+.aling-center{
+  align-items: center;
+}
+
 // Product component styles
 .product-name {
   margin-top: 10px !important;
@@ -157,3 +161,43 @@ p {
   flex-direction: row;
   align-content: space-between;
 }
+
+.section {
+  height: 70vh;
+  padding: 15px !important;
+  background-position: center;
+  padding: 15px;
+  display: contents;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.noticias-container {
+  margin-top: 2rem;
+  display: flex;
+  width: 60% !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  padding-bottom: 3rem;
+}
+.card {
+  height: auto;
+  max-height: 520px;
+}
+
+@media screen and (max-width: 768px) {
+  .noticias-container {
+    width: 100% !important;
+    height: auto; /* Puedes usar 'auto' para mantener la proporción o un valor específico según tus necesidades */
+  }
+  .card {
+    height: auto;
+    max-height: 312px;
+  }
+}
+
+// #023E73
+// #426A8C
+// #ADC5D9
+// #023859
+// #E9F1F2

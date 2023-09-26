@@ -36,5 +36,8 @@ export default {
 	},
 	googleCredentials:{
 		GOOGLE_CREDENTIALS: process.env.GOOGLE_CREDENTIALS
+	},
+	instagramToken: {
+		IG_ACCES_TOKEN: process.env.IG_ACCES_TOKEN
 	}
 };
