@@ -18,7 +18,7 @@ const calculateFinalPrice = ({ price, modificadoresSeleted }) => {
 		}
 	});
 
-	return finalPrice;
+	return finalPrice.toFixed(2);
 };
 
 export default calculateFinalPrice;
