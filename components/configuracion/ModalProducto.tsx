@@ -77,7 +77,7 @@ export default function ModalProductor({
 			modificadoresSeleted
 		});
 		setModificadoresDescriptions(modificadoresSeleted);
-		setFinalPrice(precioFinal);
+		setFinalPrice(Number(precioFinal));
 	};
 
 	const selectedTitle = productor => {

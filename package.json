@@ -9,7 +9,8 @@
 		"start": "next start",
 		"lint": "next lint",
 		"update-products": "node build/product-process.js",
-		"prettier": "prettier --write ./**/*.{js,json,ts,tsx}"
+		"prettier": "prettier --write ./**/*.{js,json,ts,tsx}",
+		"localdev": "DATABASE_ENV=true next dev"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.1.2",
