@@ -55,30 +55,32 @@ export default function Products(props) {
 		}
 		infoMessages();
 		const userOrderBySale = getuserOrderBySale(props.user.id, saleSelected._id).then(res => {
-			const parseRes = JSON.parse(res)
+			const parseRes = JSON.parse(res);
 			cart.setCarBySale(parseRes);
 		});
 		const productsBySale = getProductsBySale({
 			id: salesId,
 			isProductsIds: true
-		}).then(res => {
-			const productos = JSON.parse(res)
-			setLoading(true);
-			setProducts(productos);
-			setTotalPages(res.totalPaginas);
-			setLoading(false);
-		});
+		})
+			.then(res => {
+				const productos = JSON.parse(res);
+				setLoading(true);
+				setProducts(productos);
+				setTotalPages(res.totalPaginas);
+				setLoading(false);
+			})
+			.catch(err => console.log(err));
 		const category = getCategories().then(res => {
 			let categoriesParsed = [];
 			res.map(category => categoriesParsed.push({ key: category.slug, name: category.name }));
 			setCategories([{ key: '', name: 'Todas las categorías' }, ...categoriesParsed]);
 		});
 
-		Promise.all([userOrderBySale, productsBySale,  category])
+		Promise.all([userOrderBySale, productsBySale, category]);
 	}, []);
 
 	const fetchData = (salesId, page, category, debouncedSearch) => {
-		getProductsBySale({id: salesId, page, category: category.key, search: debouncedSearch}).then(res => {
+		getProductsBySale({ id: salesId, page, category: category.key, search: debouncedSearch }).then(res => {
 			setCurrentPage(page);
 			setProducts(res.productos);
 			setTotalPages(res.totalPaginas);

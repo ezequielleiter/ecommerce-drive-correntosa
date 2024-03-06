@@ -22,8 +22,8 @@ export default function Admin(props) {
 	const [currentStatus, setCurrentStatus] = useState(props.currentStatus);
 	const [orderBySale, setorderBySale] = useState([]);
 	const { saleSelected } = useContext(SalesCtx);
-	const [modificadores, setModificadores] = useState([])
-	const [productos, setProductos] = useState([])
+	const [modificadores, setModificadores] = useState([]);
+	const [productos, setProductos] = useState([]);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -51,10 +51,14 @@ export default function Admin(props) {
 				setProductos(res.products);
 			}
 		});
-		getOrderBySale(saleSelected._id, false).then(ordersBySale => {
-			setorderBySale(ordersBySale);
-			setOrdersCount(ordersBySale.length);
-		});
+		console.log(saleSelected);
+		
+		getOrderBySale(saleSelected._id, false)
+			.then(ordersBySale => {
+				setorderBySale(ordersBySale);
+				setOrdersCount(ordersBySale.length);
+			})
+			.catch(err => console.log(err));
 		infoMessages();
 		const dateStatus = statusDate({ openDate: saleSelected.openDate, closeDate: saleSelected.closeDate });
 		Promise.all([allModificadores, allProductos]);
@@ -65,7 +69,7 @@ export default function Admin(props) {
 		<Layout>
 			<Header user={props.user} title={saleSelected.name}></Header>
 			<Container>
-				<Grid.Container css={{ width: '100%' }}  alignItems="center" gap={1} direction="column">
+				<Grid.Container css={{ width: '100%' }} alignItems="center" gap={1} direction="column">
 					{/* {saleStatus === 'closed' ? null : saleSelected._id && props.user.isSuperAdmin ? (
 						<Grid>
 							<UpdateProductToSaleBtn saleID={saleSelected._id} />
@@ -81,17 +85,24 @@ export default function Admin(props) {
 								modificadores={modificadores}
 							/>
 						) : (
-							<CurrentStatus status={currentStatus} setEditing={setEditingDates} saleSelect={saleSelected} isSuperAdmin={props.user.isSuperAdmin}/>
+							<CurrentStatus
+								status={currentStatus}
+								setEditing={setEditingDates}
+								saleSelect={saleSelected}
+								isSuperAdmin={props.user.isSuperAdmin}
+							/>
 						)}
 					</Grid>
 					<Grid xs={12} sm={10} md={8} lg={6}>
-						<OrdersCount
-							ordersCount={ordersCount}
-							setOrdersCount={setOrdersCount}
-							status={saleSelected.status}
-							saleId={saleSelected._id}
-							orders={orderBySale}
-						/>
+						{Object.keys(orderBySale).length ? (
+							<OrdersCount
+								ordersCount={ordersCount}
+								setOrdersCount={setOrdersCount}
+								status={saleSelected.status}
+								saleId={saleSelected._id}
+								orders={orderBySale}
+							/>
+						) : null}
 					</Grid>
 				</Grid.Container>
 				{orderBySale.length === 0 ? null : <OrdersList orders={orderBySale} />}

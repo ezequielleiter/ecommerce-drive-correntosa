@@ -122,7 +122,6 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId, o
 	return (
 		<Container>
 			<Grid.Container justify="center" direction="column" alignItems="center">
-				{status === CERRADA ? (
 					<>
 						<Button onClick={handler} color="warning" css={{ marginBottom: 10 }}>
 							Resumen de la compra
@@ -141,7 +140,6 @@ const OrdersCount: FC<props> = ({ ordersCount, setOrdersCount, status, saleId, o
 							</Button>
 						</div>
 					</>
-				) : null}
 				{/* <Button
 					disabled={status === 'open'}
 					onClick={() => setVisibleModal(true)}
