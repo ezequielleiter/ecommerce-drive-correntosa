@@ -27,7 +27,7 @@ const ProductCard: FC<props> = ({ item, addProduct }) => {
 							<Text className="product-reference">{item.minimum}</Text>
 							<Text className="product-supplier">
 								<FontAwesomeIcon icon={faFaceLaughBeam} />
-								{item.seller.name}
+								{item?.seller?.name}
 							</Text>
 							<Text className="product-price">${item.finalPrice}</Text>
 						</Grid>

@@ -71,6 +71,9 @@ const ModalCreateSale: FC<props> = ({ setCreating, open, productos, modificadore
 	};
 
 	const validate = () => {
+		if (productsIds.length > 1) {
+			form.setValue("productsIds", productsIds);
+		}	
 		let localErrors: errorsFormType = form.validateFields({
 			openDate: 'Debe ingresar una fecha de apertura',
 			closeDate: 'Debe ingresar una fecha de cierre',

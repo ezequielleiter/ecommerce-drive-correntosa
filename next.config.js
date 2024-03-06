@@ -19,7 +19,9 @@ const nextConfig = {
 			'lh3.googleusercontent.com',
 			'https://lh3.googleusercontent.com/',
 			'https://drive.google.com/',
-			'drive.google.com'
+			'drive.google.com',
+			'https://scontent.cdninstagram.com',
+			"scontent.cdninstagram.com"
 		]
 	},
 	future: {

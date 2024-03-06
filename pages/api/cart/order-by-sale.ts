@@ -6,6 +6,7 @@ import AgregadoService from '../../../src/services/AgregadoService';
 import calculateFinalPrice from '../../../src/helpers/prices/calculateFinalPrice';
 import { findModificadores } from '../../../helpers/findModificadores';
 const UNDEFINED = 'undefined';
+const FALSE = 'false';
 
 export default async function getOrderBySale(req, res) {
 	try {
